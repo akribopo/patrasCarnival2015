@@ -1,9 +1,10 @@
-package gr.patras.carnival.game.account;
+package gr.patras.carnival.game.data.repositories;
 
 /**
  * Created by akribopo on 18/1/2015.
  */
 
+import gr.patras.carnival.game.data.model.Account;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

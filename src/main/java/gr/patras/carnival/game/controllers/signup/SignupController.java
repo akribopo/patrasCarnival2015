@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gr.patras.carnival.game.signup;
+package gr.patras.carnival.game.controllers.signup;
 
-import gr.patras.carnival.game.account.Account;
-import gr.patras.carnival.game.account.AccountRepository;
+import gr.patras.carnival.game.data.model.Account;
+import gr.patras.carnival.game.data.repositories.AccountRepository;
 import gr.patras.carnival.game.message.Message;
 import gr.patras.carnival.game.message.MessageType;
-import gr.patras.carnival.game.signin.SignInUtils;
+import gr.patras.carnival.game.controllers.signin.SignInUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.social.connect.Connection;

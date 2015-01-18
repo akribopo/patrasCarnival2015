@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gr.patras.carnival.game.signin;
+package gr.patras.carnival.game.controllers.signin;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-public class SignInUtils {
-	
-	/**
-	 * Programmatically signs in the user with the given the user ID.
-	 */
-	public static void signin(String userId) {
-		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userId, null, null));	
+@Controller
+public class SigninController {
+
+	@RequestMapping(value="/signin", method=RequestMethod.GET)
+	public void signin() {
 	}
-	
 }

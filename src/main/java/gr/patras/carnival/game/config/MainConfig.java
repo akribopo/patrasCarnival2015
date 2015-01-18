@@ -34,37 +34,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 public class MainConfig {
-
-//	@Bean(destroyMethod = "shutdown")
-//	public DataSource dataSource() {
-//		EmbeddedDatabaseFactory factory = new EmbeddedDatabaseFactory();
-//		factory.setDatabaseName("spring-social-showcase");
-//		factory.setDatabaseType(EmbeddedDatabaseType.H2);
-//		factory.setDatabasePopulator(databasePopulator());
-//		return factory.getDatabase();
-//	}
-//
-//	@Bean
-//	public PlatformTransactionManager transactionManager() {
-//		return new DataSourceTransactionManager(dataSource());
-//	}
-//
-//	@Bean
-//	public JdbcTemplate jdbcTemplate() {
-//		return new JdbcTemplate(dataSource());
-//	}
-
 	@Bean
 	public PropertySourcesPlaceholderConfigurer propertyPlaceHolderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
-	
-//	// internal helpers
-//	private DatabasePopulator databasePopulator() {
-//		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-//		populator.addScript(new ClassPathResource("JdbcUsersConnectionRepository.sql", JdbcUsersConnectionRepository.class));
-//		populator.addScript(new ClassPathResource("Account.sql", JdbcAccountRepository.class));
-//		populator.addScript(new ClassPathResource("data.sql", JdbcAccountRepository.class));
-//		return populator;
-//	}
 }

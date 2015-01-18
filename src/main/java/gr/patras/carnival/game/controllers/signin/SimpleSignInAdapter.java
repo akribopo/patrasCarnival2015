@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gr.patras.carnival.game.signin;
+package gr.patras.carnival.game.controllers.signin;
 
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.savedrequest.RequestCache;

@@ -13,32 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gr.patras.carnival.game.facebook;
+package gr.patras.carnival.game.controllers.facebook;
 
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Inject;
 
 @Controller
-public class FacebookProfileController {
-	
-	@Inject
-	private ConnectionRepository connectionRepository;
+public class FacebookPhotosController {
 
-	@RequestMapping(value="/facebook", method=RequestMethod.GET)
-	public String home(Model model) {
-		Connection<Facebook> connection = connectionRepository.findPrimaryConnection(Facebook.class);
-		if (connection == null) {
-			return "redirect:/connect/facebook";
-		}
-		model.addAttribute("profile", connection.getApi().userOperations().getUserProfile());
-		return "facebook/profile";
+	private final Facebook facebook;
+
+	@Inject
+	public FacebookPhotosController(Facebook facebook) {
+		this.facebook = facebook;
 	}
 
+	@RequestMapping(value="/facebook/albums", method=RequestMethod.GET)
+	public String showAlbums(Model model) {
+		model.addAttribute("albums", facebook.mediaOperations().getAlbums());
+		return "facebook/albums";
+	}
+	
+	@RequestMapping(value="/facebook/album/{albumId}", method=RequestMethod.GET)
+	public String showAlbum(@PathVariable("albumId") String albumId, Model model) {
+		model.addAttribute("album", facebook.mediaOperations().getAlbum(albumId));
+		model.addAttribute("photos", facebook.mediaOperations().getPhotos(albumId));
+		return "facebook/album";
+	}
+	
 }

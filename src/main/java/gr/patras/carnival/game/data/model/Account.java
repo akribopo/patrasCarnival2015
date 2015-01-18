@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gr.patras.carnival.game.account;
+package gr.patras.carnival.game.data.model;
 
 
 import org.springframework.security.crypto.password.PasswordEncoder;

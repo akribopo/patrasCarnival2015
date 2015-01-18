@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gr.patras.carnival.game.signin;
+package gr.patras.carnival.game.controllers.facebook;
 
+import org.springframework.social.ExpiredAuthorizationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class SigninController {
+public class FacebookExpiredToken {
 
-	@RequestMapping(value="/signin", method=RequestMethod.GET)
-	public void signin() {
+	@RequestMapping("/facebook/expired")
+	public void simulateExpiredToken() {
+		throw new ExpiredAuthorizationException("facebook");
 	}
+	
 }

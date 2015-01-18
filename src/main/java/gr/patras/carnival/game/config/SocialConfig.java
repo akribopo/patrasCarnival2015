@@ -15,8 +15,8 @@
  */
 package gr.patras.carnival.game.config;
 
-import gr.patras.carnival.game.facebook.PostToWallAfterConnectInterceptor;
-import gr.patras.carnival.game.signin.SimpleSignInAdapter;
+import gr.patras.carnival.game.controllers.facebook.PostToWallAfterConnectInterceptor;
+import gr.patras.carnival.game.controllers.signin.SimpleSignInAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;

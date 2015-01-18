@@ -1,4 +1,4 @@
-package gr.patras.carnival.game;
+package gr.patras.carnival.game.controllers;
 
 import org.springframework.social.RateLimitExceededException;
 import org.springframework.ui.Model;

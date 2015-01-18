@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gr.patras.carnival.game.facebook;
+package gr.patras.carnival.game.controllers.facebook;
 
 import org.springframework.social.ApiException;
 import org.springframework.social.connect.Connection;

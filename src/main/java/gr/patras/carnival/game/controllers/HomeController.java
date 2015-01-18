@@ -13,36 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gr.patras.carnival.game.facebook;
+package gr.patras.carnival.game.controllers;
 
-import org.springframework.social.facebook.api.Facebook;
+
+import gr.patras.carnival.game.data.repositories.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.inject.Inject;
+import javax.inject.Provider;
+import java.security.Principal;
 
 @Controller
-public class FacebookFeedController {
+public class HomeController {
 
-	private final Facebook facebook;
+	@Autowired
+	private AccountRepository accountRepository;
 
-	@Inject
-	public FacebookFeedController(Facebook facebook) {
-		this.facebook = facebook;
+	@Autowired
+	private Provider<ConnectionRepository> connectionRepositoryProvider;
+
+	@RequestMapping("/")
+	public String home(Principal currentUser, Model model) {
+		model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
+		model.addAttribute(accountRepository.findByUsername(currentUser.getName()).get(0));
+		return "home";
 	}
 
-	@RequestMapping(value="/facebook/feed", method=RequestMethod.GET)
-	public String showFeed(Model model) {
-		model.addAttribute("feed", facebook.feedOperations().getFeed());
-		return "facebook/feed";
-	}
-	
-	@RequestMapping(value="/facebook/feed", method=RequestMethod.POST)
-	public String postUpdate(String message) {
-		facebook.feedOperations().updateStatus(message);
-		return "redirect:/facebook/feed";
-	}
-	
 }

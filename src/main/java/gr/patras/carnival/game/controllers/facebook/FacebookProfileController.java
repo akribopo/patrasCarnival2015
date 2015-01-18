@@ -13,32 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package gr.patras.carnival.game;
+package gr.patras.carnival.game.controllers.facebook;
 
-import gr.patras.carnival.game.account.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.facebook.api.Facebook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.inject.Provider;
-import java.security.Principal;
+import javax.inject.Inject;
 
 @Controller
-public class HomeController {
+public class FacebookProfileController {
+	
+	@Inject
+	private ConnectionRepository connectionRepository;
 
-	@Autowired
-	private AccountRepository accountRepository;
-
-	@Autowired
-	private Provider<ConnectionRepository> connectionRepositoryProvider;
-
-	@RequestMapping("/")
-	public String home(Principal currentUser, Model model) {
-		model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
-		model.addAttribute(accountRepository.findByUsername(currentUser.getName()).get(0));
-		return "home";
+	@RequestMapping(value="/facebook", method=RequestMethod.GET)
+	public String home(Model model) {
+		Connection<Facebook> connection = connectionRepository.findPrimaryConnection(Facebook.class);
+		if (connection == null) {
+			return "redirect:/connect/facebook";
+		}
+		model.addAttribute("profile", connection.getApi().userOperations().getUserProfile());
+		return "facebook/profile";
 	}
 
 }
