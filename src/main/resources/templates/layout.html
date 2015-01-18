@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:social="http://spring.io/springsocial"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorator="layout">
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<head>
 		<title>Spring Social Showcase</title>
 		<link rel="stylesheet" th:href="@{/resources/page.css}" type="text/css" media="screen"></link>
@@ -15,25 +14,22 @@
 		</div>
 		
 		<div id="leftNav">
-			Left nav menu
+			<h4><a th:href="@{/connect}">Connections</a></h4>
+
+			<h4><a th:href="@{/facebook}">Facebook</a></h4>
+			<div social:connected="facebook">
+			<ul class="menu">
+				<li><a th:href="@{/facebook}">User Profile</a></li>
+				<li><a th:href="@{/facebook/feed}">Feed</a></li>
+				<li><a th:href="@{/facebook/albums}">Albums</a></li>
+				<li><a th:href="@{/facebook/expired}">Sim Expired</a></li>
+			</ul>
+			</div>
+
 		</div>
 		
 		<div id="content" layout:fragment="content">
-			<h3>Connected to Facebook</h3>
-			
-			<form id="disconnect" method="post">
-				<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-				<div class="formInfo">
-					<p>
-						Spring Social Showcase is connected to your Facebook account.
-						Click the button if you wish to disconnect.
-					</p>		
-				</div>
-				<button type="submit">Disconnect</button>	
-				<input type="hidden" name="_method" value="delete" />
-			</form>
-			
-			<a th:href="@{/facebook}">View your Facebook profile</a>
+			Content goes here
 		</div>		
 	</body>
 </html>

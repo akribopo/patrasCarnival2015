@@ -1,4 +1,4 @@
-package hello;
+package gr.patras.carnival.game;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

@@ -19,21 +19,11 @@
 		</div>
 		
 		<div id="content" layout:fragment="content">
-			<h3>Connected to Facebook</h3>
-			
-			<form id="disconnect" method="post">
-				<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-				<div class="formInfo">
-					<p>
-						Spring Social Showcase is connected to your Facebook account.
-						Click the button if you wish to disconnect.
-					</p>		
-				</div>
-				<button type="submit">Disconnect</button>	
-				<input type="hidden" name="_method" value="delete" />
-			</form>
-			
-			<a th:href="@{/facebook}">View your Facebook profile</a>
-		</div>		
+			<h3>Your Facebook Friends</h3>
+				
+			<ul class="friends">
+				<li th:each="friend : ${friends}"><img th:src="'http://graph.facebook.com/' + ${friend.id} + '/picture'" align="middle"/><span th:text="${friend.name}">name</span></li>
+			</ul>
+		</div>
 	</body>
 </html>
