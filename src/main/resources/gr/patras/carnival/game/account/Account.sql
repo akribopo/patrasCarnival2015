@@ -1,4 +1,4 @@
-create table Account (id identity,
+create table Account (id LONG,
 						username varchar unique,
 						password varchar not null,
 						firstName varchar not null, 
