@@ -16,6 +16,8 @@
 package gr.patras.carnival.game.account;
 
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,38 +26,43 @@ import javax.persistence.Id;
 @Entity
 public class Account {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-	private final String username;
+    private String username;
 
-	private final String password;
+    private String password;
 
-	private final String firstName;
+    private String firstName;
 
-	private final String lastName;
+    private String lastName;
 
-	public Account(String username, String password, String firstName, String lastName) {
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-	}
+    //Default Constructor
+    public Account() {
+        //Used by hibernate
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public Account(String username, String password, String firstName, String lastName) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
 }
