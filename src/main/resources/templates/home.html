@@ -4,20 +4,12 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorator="layout">
 	<head>
-		<title>Spring Social Showcase</title>
+		<title>Patras Carnival 2014</title>
 		<link rel="stylesheet" th:href="@{/resources/page.css}" type="text/css" media="screen"></link>
 		<link rel="stylesheet" th:href="@{/resources/form.css}" type="text/css" media="screen"></link>
 		<link rel="stylesheet" th:href="@{/resources/messages/messages.css}" type="text/css" media="screen"></link>
 	</head>
 	<body>
-		<div id="header">
-			<h1><a th:href="@{/}">Spring Social Showcase</a></h1>
-		</div>
-		
-		<div id="leftNav">
-			Left nav menu
-		</div>
-		
 		<div id="content" layout:fragment="content">
 			<p>Welcome, <span th:text="${account.firstName}">first-name</span>!</p>
 			
@@ -25,6 +17,10 @@
 				<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
 				<button>Sign Out</button>
 			</form>
-		</div>		
+		</div>
+
+		<div class="col-lg-6" th:each="question : ${questions}">
+			<p th:text="${question.textGr}">question</p>
+		</div>
 	</body>
 </html>

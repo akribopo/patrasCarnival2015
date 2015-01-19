@@ -49,7 +49,7 @@ public class HomeController {
 		model.addAttribute(accountRepository.findByUsername(currentUser.getName()));
 
 		// Retrieve week ID
-		final long lastWeekId = weekRepository.findById(1).get(0).getWeek();
+		final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
 		model.addAttribute("lastWeekId", lastWeekId);
 
 		model.addAttribute("questions", questionRepository.findByWeek(1));
