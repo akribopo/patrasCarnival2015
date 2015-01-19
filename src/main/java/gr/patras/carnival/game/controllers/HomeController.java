@@ -38,7 +38,7 @@ public class HomeController {
 	@RequestMapping("/")
 	public String home(Principal currentUser, Model model) {
 		model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
-		model.addAttribute(accountRepository.findByUsername(currentUser.getName()).get(0));
+		model.addAttribute(accountRepository.findByUsername(currentUser.getName()));
 		return "home";
 	}
 

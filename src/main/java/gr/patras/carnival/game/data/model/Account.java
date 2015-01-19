@@ -16,8 +16,6 @@
 package gr.patras.carnival.game.data.model;
 
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

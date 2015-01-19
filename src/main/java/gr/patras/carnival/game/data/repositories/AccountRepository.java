@@ -13,7 +13,7 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 
     List<Account> findByLastName(String lastName);
 
-    List<Account> findByUsername(String username);
+    Account findByUsername(String username);
 
     Account findByFacebookId(String id);
 }
