@@ -15,23 +15,18 @@
  */
 package gr.patras.carnival.game.controllers.signup;
 
+import gr.patras.carnival.game.controllers.signin.SignInUtils;
 import gr.patras.carnival.game.data.model.Account;
 import gr.patras.carnival.game.data.repositories.AccountRepository;
-import gr.patras.carnival.game.message.Message;
-import gr.patras.carnival.game.message.MessageType;
-import gr.patras.carnival.game.controllers.signin.SignInUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.FacebookProfile;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
-
-import javax.validation.Valid;
 
 @Controller
 public class SignupController {
@@ -42,43 +37,55 @@ public class SignupController {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public SignupForm signupForm(WebRequest request) {
-        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
+    public String signupForm(WebRequest request) {
+        Connection<Facebook> connection = (Connection<Facebook>) providerSignInUtils.getConnectionFromSession(request);
         if (connection != null) {
-            request.setAttribute("message", new Message(MessageType.INFO, "Your " + StringUtils.capitalize(connection.getKey().getProviderId()) + " account is not associated with a Spring Social Showcase account. If you're new, please sign up."), WebRequest.SCOPE_REQUEST);
-            return SignupForm.fromProviderUser(connection.fetchUserProfile());
-        } else {
-            return new SignupForm();
-        }
-    }
+            final FacebookProfile userProfile = connection.getApi().userOperations().getUserProfile();
+            final String faceboooId = userProfile.getId();
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@Valid SignupForm form, BindingResult formBinding, WebRequest request) {
-        if (formBinding.hasErrors()) {
-            return null;
-        }
-        Account account = createAccount(form, formBinding);
-        if (account != null) {
-            SignInUtils.signin(account.getUsername());
-            providerSignInUtils.doPostSignUp(account.getUsername(), request);
+            //Check if user is already registered
+            final Account dbAccount = accountRepository.findByFacebookId(faceboooId);
+
+            if (dbAccount != null) {
+                //User already registered
+                updateProfileImage(dbAccount, connection.getImageUrl());
+                SignInUtils.signin(dbAccount.getUsername());
+                providerSignInUtils.doPostSignUp(dbAccount.getUsername(), request);
+                return "redirect:/";
+            } else {
+                final String imageUrl = connection.getImageUrl();
+                final String profileUrl = connection.getProfileUrl();
+                final Account account = createAccount(userProfile, imageUrl, profileUrl);
+                SignInUtils.signin(account.getUsername());
+                providerSignInUtils.doPostSignUp(account.getUsername(), request);
+                return "redirect:/";
+            }
+        } else {
             return "redirect:/";
         }
-        return null;
     }
 
     // internal helpers
-
-    private Account createAccount(SignupForm form, BindingResult formBinding) {
-        if (accountRepository.findByUsername(form.getUsername()).isEmpty())
-            formBinding.rejectValue("username", "user.duplicateUsername", "already in use");
-
-        final Account account = new Account(form.getUsername(), passwordEncoder.encode(form.getPassword()), form.getFirstName(), form.getLastName());
-        accountRepository.save(account);
-        return account;
+    private Account createAccount(FacebookProfile fbProfile, final String imageUrl, final String profileUrl) {
+        final Account newAccount = new Account();
+        newAccount.setUsername(fbProfile.getId());
+        newAccount.setFacebookId(fbProfile.getId());
+        newAccount.setFirstName(fbProfile.getFirstName());
+        newAccount.setLastName(fbProfile.getLastName());
+        newAccount.setName(fbProfile.getName());
+        newAccount.setImageUrl(imageUrl);
+        newAccount.setProfileUrl(profileUrl);
+        accountRepository.save(newAccount);
+        return accountRepository.findByFacebookId(newAccount.getFacebookId());
     }
 
+    //Update Profile Image if changed
+    private void updateProfileImage(final Account account, final String imageUrl) {
+        if (!account.getImageUrl().equals(imageUrl)) {
+            final Account oldAccount = accountRepository.findByFacebookId(account.getFacebookId());
+            oldAccount.setImageUrl(imageUrl);
+            accountRepository.save(oldAccount);
+        }
+    }
 }

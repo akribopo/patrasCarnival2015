@@ -32,11 +32,16 @@ public class Account {
 
     private String username;
 
-    private String password;
-
     private String firstName;
 
     private String lastName;
+
+    private String name;
+
+    private String facebookId;
+    private String imageUrl;
+    private String profileUrl;
+
 
     //Default Constructor
     public Account() {
@@ -45,24 +50,73 @@ public class Account {
 
     public Account(String username, String password, String firstName, String lastName) {
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getPassword() {
-        return password;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
     }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+
 }

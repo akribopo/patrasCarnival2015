@@ -68,9 +68,7 @@ public class SignupForm {
 
 	public static SignupForm fromProviderUser(UserProfile providerUser) {
 		SignupForm form = new SignupForm();
-		form.setFirstName(providerUser.getFirstName());
-		form.setLastName(providerUser.getLastName());
-		form.setUsername(providerUser.getUsername());
+
 		return form;
 	}
 }
