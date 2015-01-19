@@ -14,4 +14,8 @@ public class Question {
 
     private int week;
 
+    private String textGr;
+
+    private String textEn;
+
 }
