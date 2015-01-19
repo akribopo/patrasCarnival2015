@@ -17,6 +17,7 @@ package gr.patras.carnival.game.controllers;
 
 
 import gr.patras.carnival.game.data.repositories.AccountRepository;
+import gr.patras.carnival.game.data.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
@@ -33,12 +34,18 @@ public class HomeController {
 	private AccountRepository accountRepository;
 
 	@Autowired
+	private QuestionRepository questionRepository;
+
+	@Autowired
 	private Provider<ConnectionRepository> connectionRepositoryProvider;
 
 	@RequestMapping("/")
 	public String home(Principal currentUser, Model model) {
 		model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
 		model.addAttribute(accountRepository.findByUsername(currentUser.getName()));
+
+		model.addAttribute("questions", questionRepository.findByWeek(1));
+
 		return "home";
 	}
 
