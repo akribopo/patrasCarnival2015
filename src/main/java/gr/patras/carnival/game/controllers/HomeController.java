@@ -18,6 +18,7 @@ package gr.patras.carnival.game.controllers;
 
 import gr.patras.carnival.game.data.repositories.AccountRepository;
 import gr.patras.carnival.game.data.repositories.QuestionRepository;
+import gr.patras.carnival.game.data.repositories.WeekRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
@@ -37,12 +38,19 @@ public class HomeController {
 	private QuestionRepository questionRepository;
 
 	@Autowired
+	private WeekRepository weekRepository;
+
+	@Autowired
 	private Provider<ConnectionRepository> connectionRepositoryProvider;
 
 	@RequestMapping("/")
-	public String home(Principal currentUser, Model model) {
+	public String home(final Principal currentUser, final Model model) {
 		model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
 		model.addAttribute(accountRepository.findByUsername(currentUser.getName()));
+
+		// Retrieve week ID
+		final long lastWeekId = weekRepository.findById(1).get(0).getWeek();
+		model.addAttribute("lastWeekId", lastWeekId);
 
 		model.addAttribute("questions", questionRepository.findByWeek(1));
 

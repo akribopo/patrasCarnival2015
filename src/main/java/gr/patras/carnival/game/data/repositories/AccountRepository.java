@@ -6,9 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-/**
- * Created by akribopo on 18/1/2015.
- */
 public interface AccountRepository
         extends CrudRepository<Account, Long> {
 
