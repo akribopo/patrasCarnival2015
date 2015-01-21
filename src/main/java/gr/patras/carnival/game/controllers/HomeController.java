@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -108,12 +109,13 @@ public class HomeController {
      */
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String postCreate(final Principal currentUser, final Model model,
-                             @PathVariable("userAnswers") Map<Integer, Integer> theAnswers) {
-        model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
+                             final ModelMap modelMap) {
 
-        for (Integer key : theAnswers.keySet()) {
+        for (String key : modelMap.keySet()) {
             System.out.println(key);
         }
+
+        model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
 
         final Account user = accountRepository.findByUsername(currentUser.getName());
         model.addAttribute(user);
@@ -128,11 +130,6 @@ public class HomeController {
         }
 
         // Save answers
-        final Map<String, Object> modelMap = model.asMap();
-        for (String key : modelMap.keySet()) {
-            System.out.println(key);
-        }
-
         final List<Question> lstQuestions = (List<Question>) modelMap.get("questions");
         for (final Question question : lstQuestions) {
             final String questionId = String.valueOf(question.getId());
