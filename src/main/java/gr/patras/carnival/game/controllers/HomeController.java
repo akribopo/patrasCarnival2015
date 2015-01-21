@@ -26,12 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Provider;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,12 +108,7 @@ public class HomeController {
      */
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String postCreate(final Principal currentUser, final Model model,
-                             final ModelMap modelMap) {
-
-        for (String key : modelMap.keySet()) {
-            System.out.println(key);
-        }
-
+                             final HttpServletRequest request) {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
 
         final Account user = accountRepository.findByUsername(currentUser.getName());
@@ -130,15 +124,13 @@ public class HomeController {
         }
 
         // Save answers
-        final List<Question> lstQuestions = (List<Question>) modelMap.get("questions");
+        final List<Question> lstQuestions = (List<Question>) model.asMap().get("questions");
         for (final Question question : lstQuestions) {
             final String questionId = String.valueOf(question.getId());
-            System.out.println(questionId);
-            if (modelMap.containsKey(questionId)) {
-                // Retrieve Answer
-                final String value = (String) modelMap.get(questionId);
-                System.out.println(question.getId() + " > " + value);
 
+            // Retrieve Answer
+            final String value = request.getParameter(questionId);
+            if (value != null) {
                 // Store new answer
                 final UserAnswers thisAnswer = new UserAnswers();
                 thisAnswer.setUserId(user.getId());
