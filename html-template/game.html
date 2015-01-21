@@ -1,0 +1,145 @@
+<html lang="en" xmlns="http://www.w3.org/1999/html"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <title>Διαδικτυακός Κρυμμένος Θησαυρός</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Bootstrap theme -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link href="css/justified-nav.css" rel="stylesheet">
+    <link href="css/patrascarnival.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script>
+    var currentQuestion = 0;
+    var rightAnswers = 0;
+</script><style type="text/css"></style></head>
+
+
+<body role="document">
+<div class="container">
+
+    <div class="masthead">
+        <h3 class="text-muted"><img src="img/logo.png"></h3>
+        <ul class="nav nav-justified pull-left">
+            <li class="active"><a href="http://game.patrascarnival.gr">Διαδικτυακός Κρυμμένος Θησαυρός</a></li>
+            <li><a href="http://patrascarnival.gr">Πατρινό Καρναβάλι 2015</a></li>
+            <li></li>
+            <li></li>
+            <li></li>
+         
+           	
+        </ul>
+    </div>
+
+</div>
+<div class="container-fluid">
+
+        <div class="row" id="q-0">
+            <div class="col-sm-6 question-block col-sm-offset-3">
+                <div class="panel panel-question">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Ποιός ντύθηκε μπούλα για πρώτη φορά στο Πατρινό Καρναβάλι?</h3>
+                    </div>
+
+
+                    <!-- panel title-->
+                    <div class="panel-body answer-block">
+                        <div class="btn-group-vertical answer-choice" data-toggle="buttons" style="width: 145%">
+                            
+                                <label id="q-0-a-1" class="btn btn-default answer-block wrap-btn">
+                                    <input type="radio" name="answers" value="1" class="text-left">
+                                    Η Γιαννούλα η κουλουρού.
+                                </label>
+                            
+                                <label id="q-0-a-3" class="btn btn-default answer-block wrap-btn">
+                                    <input type="radio" name="answers" value="3" class="text-left">
+                                    Ο Τσίλερ.
+                                </label>
+                            
+                                <label id="q-0-a-2" class="btn btn-default answer-block wrap-btn">
+                                    <input type="radio" name="answers" value="2" class="text-left">
+                                    Ο Βασίλας ο τρελλός. 
+                                </label>
+                            
+                        </div>
+                        <!-- buttons -->
+
+                    </div>
+                    <!-- panel body-->
+		</div>
+                <!--panel-primary> -->
+                <div id="controls" class="col-md-12">
+                    <div id="answer-action-0">
+                        <button type="button" style="width:100%" class="btn btn-success" onclick="answer()" style=" margin-top:10px;">Αποθήκευση
+                        </button>
+                    </div>
+                    <!-- answer action-->	
+                    </div>
+                </div>
+            </div>
+       
+        <!-- contols-->
+    </div>
+</div>
+
+<script>
+    function goToNext() {
+        $('#q-' + currentQuestion).remove();
+        currentQuestion += 1;
+        if (currentQuestion > 4) {
+            $('#results').show();
+
+        }
+        $('#q-' + currentQuestion).show();
+
+    }
+
+    function answer() {
+        var selectedVal = $('input:radio[name=answers]:checked').val();
+
+        right = 1;
+        if (selectedVal == right) {
+            $("#status").attr("src", "img/correct.png");
+            rightAnswers += 1;
+        } else {
+            $("#status").attr("src", "img/wrong.png");
+        }
+
+        $("#answer-action-" + currentQuestion).hide();
+        $("#why-next-" + currentQuestion).show();
+
+        $('#q-' + currentQuestion + "-a-1").css('background-color', 'green');
+        $('#q-' + currentQuestion + "-a-1").css('background-image', 'none');
+        $('#q-' + currentQuestion + "-a-2").css('background-color', 'red');
+        $('#q-' + currentQuestion + "-a-2").css('background-image', 'none');
+        $('#q-' + currentQuestion + "-a-3").css('background-color', 'red');
+        $('#q-' + currentQuestion + "-a-3").css('background-image', 'none');
+
+    }
+
+    function restart() {
+        window.location.href = "/";
+    }
+</script>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/game.js"></script>
+
+</body></html>

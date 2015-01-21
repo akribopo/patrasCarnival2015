@@ -1,0 +1,41 @@
+.question-block {
+    margin-top: 40px;
+}
+
+.answer-block {
+    position: relative;
+    display: inline-block !important;
+}
+
+.img-back{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    /*z-index: 10;*/
+    font-size: 150px;
+    color: rgba(126, 182, 177,0.25);
+}
+.wrap-btn {
+    white-space: normal;
+    width: 100px;
+    text-align: left;
+
+}
+
+/* portokali e4373c*/
+.panel-question {
+  border-color: #e4373c;
+}
+.panel-question > .panel-heading {
+  color: #fff;
+  background-color: #e4373c;
+  border-color: #e4373c;
+}
+.panel-question > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #e4373c;
+}
+.panel-question > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #e4373c;
+}
+
+
