@@ -109,6 +109,11 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String postCreate(final Principal currentUser, final Model model,
                              final HttpServletRequest request) {
+
+        for (String key : request.getParameterMap().keySet()) {
+            System.out.println(key + " - " + request.getParameter(key));
+        }
+
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
 
         final Account user = accountRepository.findByUsername(currentUser.getName());
@@ -131,6 +136,8 @@ public class HomeController {
             // Retrieve Answer
             final String value = request.getParameter(questionId);
             if (value != null) {
+                System.out.println(questionId + " - " + request.getParameter(value));
+
                 // Store new answer
                 final UserAnswers thisAnswer = new UserAnswers();
                 thisAnswer.setUserId(user.getId());

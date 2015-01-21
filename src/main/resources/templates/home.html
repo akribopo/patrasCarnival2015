@@ -49,93 +49,46 @@
 
     <div class="row" id="q-0">
         <div class="col-sm-6 question-block col-sm-offset-3">
+            <form method="post" accept-charset="utf-8" class="form" role="form">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
-            <div class="panel panel-question">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Ποιός ντύθηκε μπούλα για πρώτη φορά στο Πατρινό Καρναβάλι?</h3>
-                </div>
+                <div class="panel panel-question" th:each="question : ${questions}">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" th:text="${question.textGr}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο Πατρινό Καρναβάλι?</h3>
+                    </div>
 
-                <!-- panel title-->
-                <div class="panel-body answer-block">
-                    <div class="btn-group-vertical answer-choice" data-toggle="buttons" style="width: 145%">
-
-                        <label id="q-0-a-1" class="btn btn-default answer-block wrap-btn">
-                            <input type="radio" name="answers" value="1" class="text-left">
-                            Η Γιαννούλα η κουλουρού.</input>
-                        </label>
-
-                        <label id="q-0-a-3" class="btn btn-default answer-block wrap-btn">
-                            <input type="radio" name="answers" value="3" class="text-left">
-                            Ο Τσίλερ.</input>
-                        </label>
-
-                        <label id="q-0-a-2" class="btn btn-default answer-block wrap-btn">
-                            <input type="radio" name="answers" value="2" class="text-left">
-                            Ο Βασίλας ο τρελλός.</input>
-                        </label>
+                    <!-- panel title-->
+                    <div class="panel-body answer-block">
+                        <div class="btn-group-vertical answer-choice" data-toggle="buttons" style="width: 100%">
+                            <select th:id="${question.id}" th:name="${question.id}" class="btn btn-default answer-block wrap-btn">
+                                <option th:each="answer : ${answers[question.week]}"
+                                        th:id="${answer.id}" th:value="${answer.id}" th:text="${answer.textGr}"
+                                        class="text-left"
+                                        th:selected="${userAnswers[question.id] == answer.id}">Η Γιαννούλα η κουλουρού.
+                                </option>
+                            </select>
+                        </div>
+                        <!-- buttons -->
 
                     </div>
-                    <!-- buttons -->
-
+                    <!-- panel body-->
                 </div>
-                <!-- panel body-->
-            </div>
 
-
-            <!--panel-primary> -->
-            <div id="controls" class="col-md-12">
-                <div id="answer-action-0">
-                    <button type="button" style="width:100%; margin-top:10px;" class="btn btn-success" onclick="answer()">
-                        Αποθήκευση
-                    </button>
+                <!--panel-primary> -->
+                <div id="controls" class="col-md-12">
+                    <div id="answer-action-0">
+                        <button type="button" style="width:100%; margin-top:10px; margin-bottom:20px;" class="btn btn-success">
+                            Αποθήκευση
+                        </button>
+                    </div>
+                    <!-- answer action-->
                 </div>
-                <!-- answer action-->
-            </div>
+            </form>
         </div>
     </div>
 
     <!-- contols-->
 </div>
-
-<script>
-    function goToNext() {
-        $('#q-' + currentQuestion).remove();
-        currentQuestion += 1;
-        if (currentQuestion > 4) {
-            $('#results').show();
-
-        }
-        $('#q-' + currentQuestion).show();
-
-    }
-
-    function answer() {
-        var selectedVal = $('input:radio[name=answers]:checked').val();
-
-        right = 1;
-        if (selectedVal == right) {
-            $("#status").attr("src", "img/correct.png");
-            rightAnswers += 1;
-        } else {
-            $("#status").attr("src", "img/wrong.png");
-        }
-
-        $("#answer-action-" + currentQuestion).hide();
-        $("#why-next-" + currentQuestion).show();
-
-        $('#q-' + currentQuestion + "-a-1").css('background-color', 'green');
-        $('#q-' + currentQuestion + "-a-1").css('background-image', 'none');
-        $('#q-' + currentQuestion + "-a-2").css('background-color', 'red');
-        $('#q-' + currentQuestion + "-a-2").css('background-image', 'none');
-        $('#q-' + currentQuestion + "-a-3").css('background-color', 'red');
-        $('#q-' + currentQuestion + "-a-3").css('background-image', 'none');
-
-    }
-
-    function restart() {
-        window.location.href = "/";
-    }
-</script>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
