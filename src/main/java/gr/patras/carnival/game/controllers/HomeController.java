@@ -109,11 +109,6 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String postCreate(final Principal currentUser, final Model model,
                              final HttpServletRequest request) {
-
-        for (String key : request.getParameterMap().keySet()) {
-            System.out.println(key + " - " + request.getParameter(key));
-        }
-
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
 
         final Account user = accountRepository.findByUsername(currentUser.getName());
@@ -129,6 +124,7 @@ public class HomeController {
         }
 
         // Save answers
+        final Map<Long, Long> mapUserAnswers = new HashMap<Long, Long>();
         final List<Question> lstQuestions = (List<Question>) model.asMap().get("questions");
         for (final Question question : lstQuestions) {
             final String questionId = String.valueOf(question.getId());
@@ -136,16 +132,18 @@ public class HomeController {
             // Retrieve Answer
             final String value = request.getParameter(questionId);
             if (value != null) {
-                System.out.println(questionId + " - " + request.getParameter(value));
-
                 // Store new answer
                 final UserAnswers thisAnswer = new UserAnswers();
                 thisAnswer.setUserId(user.getId());
                 thisAnswer.setQuestionId(question.getId());
                 thisAnswer.setAnswerId(Long.valueOf(value));
                 userAnswersRepository.save(thisAnswer);
+
+                mapUserAnswers.put(question.getId(), thisAnswer.getAnswerId());
             }
         }
+
+        model.addAttribute("userAnswers", mapUserAnswers);
 
         return "home";
     }
