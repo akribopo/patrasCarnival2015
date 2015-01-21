@@ -16,6 +16,8 @@ public class UserAnswers {
 
     private long answerId;
 
+    private long questionId;
+
     public long getId() {
         return id;
     }
@@ -38,5 +40,13 @@ public class UserAnswers {
 
     public void setAnswerId(long answerId) {
         this.answerId = answerId;
+    }
+
+    public long getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(long questionId) {
+        this.questionId = questionId;
     }
 }
