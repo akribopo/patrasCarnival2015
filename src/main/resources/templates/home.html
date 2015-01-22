@@ -32,13 +32,14 @@
     <div class="masthead">
         <h3 class="text-muted"><img th:src="@{/resources/img/logo.png}"/></h3>
         <ul class="nav nav-justified pull-left">
-            <li class="active"><a href="http://game.carnivalpatras.gr" accept-charset="utf-8"  th:text="#{menu.item.1}">Διαδικτυακός Κρυμμένος
+            <li class="active"><a href="http://game.carnivalpatras.gr" accept-charset="utf-8" th:text="#{menu.item.1}">Διαδικτυακός
+                Κρυμμένος
                 Θησαυρός</a></li>
             <li><a href="http://carnivalpatras.gr" th:text="#{menu.item.2}">Πατρινό Καρναβάλι 2015</a></li>
             <li></li>
             <li></li>
             <li class="dropdown">
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Language: <b class="caret"></b></a>
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span th:text="#{language}">Language:</span> <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a th:href="@{/?language=gr}">Ελληνικά</a></li>
                     <li><a th:href="@{/?language=en}">English</a></li>
@@ -55,32 +56,35 @@
             <form method="post" accept-charset="utf-8" class="form" role="form">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
-                <div class="panel panel-question" th:each="question : ${questions}">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" th:text="${question.text}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο
-                            Πατρινό Καρναβάλι?</h3>
-                    </div>
-
-                    <!-- panel title-->
-                    <div class="panel-body answer-block">
-                        <div class="btn-group-vertical answer-choice" data-toggle="buttons" style="width: 100%">
-                            <select th:id="${question.id}" th:name="${question.id}"
-                                    class="btn btn-default answer-block wrap-btn">
-                                <option th:each="answer : ${answers[question.week]}"
-                                        th:id="${answer.id}" th:value="${answer.id}" th:text="${answer.text}"
-                                        class="text-left"
-                                        th:selected="${userAnswers[question.id] == answer.id}">Η Γιαννούλα η κουλουρού.
-                                </option>
-                            </select>
+                <div th:each="question : ${questions}">
+                    <div th:class="${'panel panel-question-w' + question.week}">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" th:text="${question.text}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο
+                                Πατρινό Καρναβάλι?</h3>
                         </div>
-                        <!-- buttons -->
 
+                        <!-- panel title-->
+                        <div class="panel-body answer-block">
+                            <div class="btn-group-vertical answer-choice" data-toggle="buttons" style="width: 100%">
+                                <select th:id="${question.id}" th:name="${question.id}"
+                                        class="btn btn-default answer-block wrap-btn">
+                                    <option th:each="answer : ${answers[question.week]}"
+                                            th:id="${answer.id}" th:value="${answer.id}" th:text="${answer.text}"
+                                            class="text-left"
+                                            th:selected="${userAnswers[question.id] == answer.id}">Η Γιαννούλα η
+                                        κουλουρού.
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- buttons -->
+
+                        </div>
+                        <!-- panel body-->
                     </div>
-                    <!-- panel body-->
                 </div>
 
                 <!--panel-primary> -->
-                <div id="controls" class="col-md-12">
+                <div id="controls" class="col-md-12" th:if="${lastWeekId > 0}">
                     <div id="answer-action-0">
                         <button type="submit" style="width:100%; margin-top:10px; margin-bottom:20px;"
                                 class="btn btn-success" th:text="#{save}">
@@ -89,6 +93,13 @@
                     </div>
                     <!-- answer action-->
                 </div>
+
+                <div class="panel panel-question"  th:if="${lastWeekId == 0}">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" th:text="#{startupMessage}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο Πατρινό Καρναβάλι?</h3>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
