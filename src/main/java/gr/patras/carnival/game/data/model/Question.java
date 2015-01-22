@@ -1,9 +1,6 @@
 package gr.patras.carnival.game.data.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Question {
@@ -17,6 +14,9 @@ public class Question {
     private String textGr;
 
     private String textEn;
+
+    @Transient
+    private String text;
 
     public long getId() {
         return id;
@@ -48,5 +48,13 @@ public class Question {
 
     public void setTextEn(String textEn) {
         this.textEn = textEn;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

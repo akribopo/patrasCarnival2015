@@ -23,6 +23,7 @@ import gr.patras.carnival.game.data.model.UserAnswers;
 import gr.patras.carnival.game.data.repositories.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,10 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.inject.Provider;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -64,16 +62,38 @@ public class HomeController {
         // Retrieve week ID
         final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
         model.addAttribute("lastWeekId", lastWeekId);
+        final String language = getCurrentLanguage();
+        model.addAttribute("lan", language);
 
         // Retrieve all questions + answers up to last week
         final List<Question> lstQuestions = new ArrayList<Question>();
         final Map<Integer, List<Answer>> mapAnswers = new HashMap<Integer, List<Answer>>();
         for (int week = 1; week <= lastWeekId; week++) {
             final List<Question> thisWeekQuestions = questionRepository.findByWeek(week);
+            if (language.equals("en")) {
+                for (Question thisWeekQuestion : thisWeekQuestions) {
+                    thisWeekQuestion.setText(thisWeekQuestion.getTextEn());
+                }
+            } else {
+                for (Question thisWeekQuestion : thisWeekQuestions) {
+                    thisWeekQuestion.setText(thisWeekQuestion.getTextGr());
+                }
+            }
+
             lstQuestions.addAll(thisWeekQuestions);
             LOGGER.debug("Questions for Week " + week + " found: " + thisWeekQuestions.size());
 
             final List<Answer> thisWeekAnswers = answerRepository.findByWeek(week);
+            if (language.equals("en")) {
+                for (Answer thisWeekAnswer : thisWeekAnswers) {
+                    thisWeekAnswer.setText(thisWeekAnswer.getTextEn());
+                }
+            } else {
+                for (Answer thisWeekAnswer : thisWeekAnswers) {
+                    thisWeekAnswer.setText(thisWeekAnswer.getTextGr());
+                }
+            }
+
             mapAnswers.put(week, thisWeekAnswers);
             LOGGER.debug("Answers for Week " + week + " found: " + thisWeekAnswers.size());
         }
@@ -148,4 +168,10 @@ public class HomeController {
         return "home";
     }
 
+    private String getCurrentLanguage() {
+        final Locale locale = LocaleContextHolder.getLocale();
+        final String language = locale.getLanguage();
+        LOGGER.info("Current Language is: " + language);
+        return language;
+    }
 }
