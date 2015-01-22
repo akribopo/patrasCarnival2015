@@ -38,4 +38,53 @@
   border-bottom-color: #e4373c;
 }
 
+/* portokali e4373c*/
+.panel-question-w1 {
+  border-color: #e4373c;
+}
+.panel-question-w1 > .panel-heading {
+  color: #fff;
+  background-color: #e4373c;
+  border-color: #e4373c;
+}
+.panel-question-w2 > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #e4373c;
+}
+.panel-question-w3 > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #e4373c;
+}
+
+
+/* kitrino #fce426*/
+.panel-question-w2 {
+  border-color: #fce426;
+}
+.panel-question-w2 > .panel-heading {
+  color: #fff;
+  background-color: #fce426;
+  border-color: #fce426;
+}
+.panel-question-w2 > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #fce426;
+}
+.panel-question-w2 > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #fce426;
+}
+
+
+/* mple #746da8*/
+.panel-question-w3 {
+  border-color: #746da8;
+}
+.panel-question-w3 > .panel-heading {
+  color: #fff;
+  background-color: #746da8;
+  border-color: #746da8;
+}
+.panel-question-w3 > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #746da8;
+}
+.panel-question-w3 > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #746da8;
+}
 
