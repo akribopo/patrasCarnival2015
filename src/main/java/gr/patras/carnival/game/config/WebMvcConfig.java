@@ -79,6 +79,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("/WEB-INF/messages/messages");
+        messageSource.setDefaultEncoding("UTF-8");
         messageSource.setCacheSeconds(10); //reload messages every 10 seconds
         return messageSource;
     }

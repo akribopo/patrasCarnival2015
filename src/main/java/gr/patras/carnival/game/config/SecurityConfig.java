@@ -97,4 +97,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		return Encryptors.noOpText();
 	}
 
+
+
 }

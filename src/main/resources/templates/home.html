@@ -32,11 +32,18 @@
     <div class="masthead">
         <h3 class="text-muted"><img th:src="@{/resources/img/logo.png}"/></h3>
         <ul class="nav nav-justified pull-left">
-            <li class="active"><a href="http://game.carnivalpatras.gr">Διαδικτυακός Κρυμμένος Θησαυρός</a></li>
+            <li class="active"><a href="http://game.carnivalpatras.gr" accept-charset="utf-8"  th:text="#{menu.item.1}">Διαδικτυακός Κρυμμένος
+                Θησαυρός</a></li>
             <li><a href="http://carnivalpatras.gr" th:text="#{menu.item.2}">Πατρινό Καρναβάλι 2015</a></li>
             <li></li>
             <li></li>
-            <li></li>
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Language: <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/?language=gr}">Ελληνικά</a></li>
+                    <li><a th:href="@{/?language=en}">English</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 
@@ -50,13 +57,15 @@
 
                 <div class="panel panel-question" th:each="question : ${questions}">
                     <div class="panel-heading">
-                        <h3 class="panel-title" th:text="${question.text}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο Πατρινό Καρναβάλι?</h3>
+                        <h3 class="panel-title" th:text="${question.text}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο
+                            Πατρινό Καρναβάλι?</h3>
                     </div>
 
                     <!-- panel title-->
                     <div class="panel-body answer-block">
                         <div class="btn-group-vertical answer-choice" data-toggle="buttons" style="width: 100%">
-                            <select th:id="${question.id}" th:name="${question.id}" class="btn btn-default answer-block wrap-btn">
+                            <select th:id="${question.id}" th:name="${question.id}"
+                                    class="btn btn-default answer-block wrap-btn">
                                 <option th:each="answer : ${answers[question.week]}"
                                         th:id="${answer.id}" th:value="${answer.id}" th:text="${answer.text}"
                                         class="text-left"
@@ -73,7 +82,8 @@
                 <!--panel-primary> -->
                 <div id="controls" class="col-md-12">
                     <div id="answer-action-0">
-                        <button type="submit" style="width:100%; margin-top:10px; margin-bottom:20px;" class="btn btn-success">
+                        <button type="submit" style="width:100%; margin-top:10px; margin-bottom:20px;"
+                                class="btn btn-success" th:text="#{save}">
                             Αποθήκευση
                         </button>
                     </div>
