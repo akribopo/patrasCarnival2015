@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Διαδικτυακός Κρυμμένος Θησαυρός</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <meta name="description" content="Patras Carnival 2015 - Internet based Hidden Treasure Game"></meta>
+    <meta name="author" content=""></meta>
+    <link rel="shortcut icon" th:href="@{/resources/img/favicon.ico}"></link>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/resources/css/bootstrap.css}" rel="stylesheet"></link>
+
+    <!-- Bootstrap theme -->
+    <link th:href="@{/resources/css/bootstrap-theme.css}" rel="stylesheet"></link>
+    <link th:href="@{/resources/css/justified-nav.css}" rel="stylesheet"></link>
+    <link th:href="@{/resources/css/patrascarnival.css}" rel="stylesheet"></link>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"></link>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body role="document">
+<div class="container">
+
+    <div class="masthead">
+        <h3 class="text-muted"><img th:src="@{/resources/img/logo.png}"/></h3>
+        <ul class="nav nav-justified pull-left">
+            <li class="active"><a href="http://game.carnivalpatras.gr" th:text="#{menu.item.1}">Διαδικτυακός Κρυμμένος
+                Θησαυρός</a></li>
+            <li><a href="http://www.carnivalpatras.gr" th:text="#{menu.item.2}">Πατρινό Καρναβάλι 2015</a></li>
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span th:text="#{language}">Language:</span>
+                    <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a th:href="@{/signin/?language=gr}">Ελληνικά</a></li>
+                    <li><a th:href="@{/signin/?language=en}">English</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div class="container-fluid">
+
+    <div class="row" id="q-0">
+        <div class="col-sm-4 question-block col-sm-offset-4">
+            <div class="panel panel-question">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Κανόνες Παιχνιδιού</h3>
+
+                    <p>Το παιχνίδι αποτελείται από 4 φάσεις και την Τελική Αναμέτρηση. Σε κάθε φάση υπάρχει το παιχνίδι
+                        των ερωτήσεων και πιθανόν άλλα διαδραστικά παιχνίδια καθώς και άλλα ζητούμενα.</p>
+
+                    <p>Μπορείτε ανά πάσα στιγμή να αλλάξετε την απάντηση που έχετε δώσει σε μια ερώτηση είτε να
+                        ξαναπαίξετε ένα παιχνίδι ή δοκιμασία. Το σύστημα κατοχυρώνει την τελευταία απάντηση ή σκορ
+                        παιχνιδιού ή δοκιμασίας, μεχρι την τελική ημερομηνία του παιχνιδιού που για το 2015 είναι η
+                        Παρασκευή 20/2/15 και ώρα 18.00, οπότε και θα κλειδώσουν αυτόματα όλες οι απαντήσεις και οι
+                        επιδόσεις σε δοκιμασίες ή παιχνίδια που έχουν τεθεί (εκτός αν κάποιο παιχνίδι ή δοκιμασία
+                        αναφέρει διαφορετικό deadline).</p>
+
+                    <p>Για να επιτύχετε στην διαδικασία του παιχνιδιού σκεφτείτε απλά.
+                        Όλα οι ερωτήσεις, οι δοκιμασίες και τα παιχνίδια είναι τεκμηριωμένα με απλή λογική. Ειδικά για
+                        τις ερωτήσεις αυτο που χρειάζεται ειναι να λάβετε υπόψη σας τις λέξεις κλειδια που υπάρχουν στην
+                        εκφώνηση καθώς και τις πολλαπλές έννοιες που υπάρχουν πολλές φορές, για να οδηγηθείτε στην λύση
+                        τους. Στα παιχνίδια, πολλές φορές, η σειρά των κινήσεων στην διαδικασία της λύσης, όσο και η
+                        χρήση του ποντικιού έχουν πρωταρχικό ρόλο.</p>
+
+                    <p>Κάθε ερώτηση, δοκιμασία ή παιχνίδι δίνει 50 πόντους, εκτός από την Τελική Αναμέτρηση η οποία
+                        δίνει100 πόντους μόνο σε αυτόν που θα δώσει πρώτος την σωστή απάντηση και της οποίας ο χρόνος
+                        και η ώρα τέλεσης θα ανακοινωθεί εγκαίρως απο εδώ.</p>
+
+                    <p>Κάθε αποτέλεσμα ελέγχεται και καταγράφεται από το σύστημα αυτόματα, τεκμηριώνοντας την εγγραφή
+                        αυτή με την ημερομηνία και την ώρα σε ακρίβεια δευτερολέπτου.</p>
+
+                    <p>Τα μυστικά μας δεν θα τα πούμε και… είναι πολλά. </p>
+
+                    <p>Σας ευχαριστούμε για την συμμετοχή σας.</p>
+
+                    <p>Καλή Επιτυχία σε όλους.</p>
+
+                    <p>Η οργανωτική επιτροπή του παιχνιδιού του Κρυμμένου θησαυρού.</p>
+
+                </div>
+
+            </div>
+
+            <div class="panel panel-question">
+                <div class="panel-heading">
+                    <h3 class="panel-title">GENERAL INSTRUCTIONS</h3>
+
+                    <p>Dear players, you should be aware of the following details:</p>
+
+                    <p>The game consists of 4 phases and the Final Conflict. In every phase there is the questions game,
+                        the various interactive games, along with other challenges. You can change a given answer of a
+                        certain question, anytime, or you can play again the same game or challenge from the beginning.
+                        The system secures the last given answer or game’s score or challenge’s score, until the closing
+                        date of the game, Friday 20/2/2015, 17:00 CET. By that time all the answers and the scores in
+                        challenges or games will be automatically locked (unless another deadline has been set for some
+                        specific game or challenge).</p>
+
+                    <p>The key to success in the game is one: think simply.
+                        All the questions, challenges and games are documented in common reasoning. Especially for the
+                        questions, the keywords contained must be seriously taken in consideration and, along with the
+                        oracular meanings, they can lead you to the solution. In the game the sequence of the movements
+                        and the use of the mouse often play a key role to the solution process.</p>
+
+                    <p>Each question, challenge or game gives 50 points, except for the Final Conflict, which gives 100
+                        points, only to the one who first gives the right answer. The exact time and the duration of the
+                        Final Conflict will be announced on time by this site.</p>
+
+                    <p>Each result is controlled and monitored by the system automatically documenting this record with
+                        the date and time of a second accuracy</p>
+
+                    <p>Many though they may be... we won’t reveal our secrets!</p>
+
+                    <p>Thanks for your participation and good luck!</p>
+
+                    <p>The organizing committee of the Hidden Treasure Game</p>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- contols-->
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/resources/js/jquery.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script th:src="@{/resources/js/game.js}"></script>
+
+</body>
+</html>

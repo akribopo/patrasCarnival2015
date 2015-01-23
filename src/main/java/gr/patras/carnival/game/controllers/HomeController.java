@@ -137,6 +137,21 @@ public class HomeController {
         return "home";
     }
 
+    @RequestMapping("/privacy")
+    public String privacy() {
+        return "terms";
+    }
+
+    @RequestMapping("/terms")
+    public String terms() {
+        return "terms";
+    }
+
+    @RequestMapping("/help")
+    public String help() {
+        return "help";
+    }
+
     /**
      * The controller used to sign users up using only the email address.
      *
