@@ -18,6 +18,9 @@ public class Question {
     @Transient
     private String text;
 
+    @Transient
+    private boolean phaseChange;
+
     public long getId() {
         return id;
     }
@@ -56,5 +59,13 @@ public class Question {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean isPhaseChange() {
+        return phaseChange;
+    }
+
+    public void setPhaseChange(boolean phaseChange) {
+        this.phaseChange = phaseChange;
     }
 }

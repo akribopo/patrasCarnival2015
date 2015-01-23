@@ -37,7 +37,8 @@
                 Θησαυρός</a></li>
             <li><a href="http://www.carnivalpatras.gr" th:text="#{menu.item.2}">Πατρινό Καρναβάλι 2015</a></li>
             <li class="dropdown">
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span th:text="#{language}">Language:</span> <b class="caret"></b></a>
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span th:text="#{language}">Language:</span>
+                    <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a th:href="@{/?language=gr}">Ελληνικά</a></li>
                     <li><a th:href="@{/?language=en}">English</a></li>
@@ -54,7 +55,30 @@
             <form method="post" accept-charset="utf-8" class="form" role="form">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
+                <div class="panel panel-question" th:if="${lastWeekId == 0}">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" th:text="#{startupMessage}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο
+                            Πατρινό Καρναβάλι?</h3>
+                    </div>
+                </div>
+
+                <div class="panel panel-question" th:if="${lastWeekId == 5}">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" th:text="#{endingMessage}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο
+                            Πατρινό Καρναβάλι?</h3>
+                    </div>
+                </div>
+
                 <div th:each="question : ${questions}">
+                    <div th:class="${'panel panel-question-w' + question.week}" th:if="${question.phaseChange}">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" style="font-size: 22px; font-weight: bold;"><span th:text="#{phase}"></span> <span
+                                    th:text="${question.week}"></span></h3>
+                        </div>
+                    </div>
+
+                    <div th:with="thisWeek=${question.week}"></div>
+
                     <div th:class="${'panel panel-question-w' + question.week}">
                         <div class="panel-heading">
                             <h3 class="panel-title" th:text="${question.text}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο
@@ -83,19 +107,13 @@
 
                 <!--panel-primary> -->
                 <div id="controls" class="col-md-12" th:if="${lastWeekId > 0}">
-                    <div id="answer-action-0">
+                    <div id="answer-action-0"  th:if="${lastWeekId != 5}">
                         <button type="submit" style="width:100%; margin-top:10px; margin-bottom:20px;"
                                 class="btn btn-success" th:text="#{save}">
                             Αποθήκευση
                         </button>
                     </div>
                     <!-- answer action-->
-                </div>
-
-                <div class="panel panel-question"  th:if="${lastWeekId == 0}">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" th:text="#{startupMessage}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο Πατρινό Καρναβάλι?</h3>
-                    </div>
                 </div>
 
             </form>

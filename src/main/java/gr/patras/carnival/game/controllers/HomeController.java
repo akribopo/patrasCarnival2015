@@ -65,18 +65,35 @@ public class HomeController {
         final String language = getCurrentLanguage();
         model.addAttribute("lan", language);
 
+        if (lastWeekId < 5) {
+            int weekChange = 0;
+
+            model.addAttribute("questions", new ArrayList<Question>());
+            model.addAttribute("answers", new HashMap<Integer, List<Answer>>());
+            model.addAttribute("userAnswers", new HashMap<Long, Long>());
+        }
+
         // Retrieve all questions + answers up to last week
         final List<Question> lstQuestions = new ArrayList<Question>();
         final Map<Integer, List<Answer>> mapAnswers = new HashMap<Integer, List<Answer>>();
         for (int week = 1; week <= lastWeekId; week++) {
             final List<Question> thisWeekQuestions = questionRepository.findByWeek(week);
+            boolean isFirst = true;
             if (language.equals("en")) {
                 for (Question thisWeekQuestion : thisWeekQuestions) {
                     thisWeekQuestion.setText(thisWeekQuestion.getTextEn());
+                    if (isFirst) {
+                        thisWeekQuestion.setPhaseChange(true);
+                        isFirst = false;
+                    }
                 }
             } else {
                 for (Question thisWeekQuestion : thisWeekQuestions) {
                     thisWeekQuestion.setText(thisWeekQuestion.getTextGr());
+                    if (isFirst) {
+                        thisWeekQuestion.setPhaseChange(true);
+                        isFirst = false;
+                    }
                 }
             }
 
