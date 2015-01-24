@@ -51,7 +51,7 @@ public class SimpleSignInAdapter implements SignInAdapter {
 		}
 		requestCache.removeRequest(nativeReq, nativeRes);
 		removeAutheticationAttributes(nativeReq.getSession(false));
-		return "http://game.carnivalpatras.gr/";
+		return "https://game.carnivalpatras.gr/";
 		//return saved.getRedirectUrl();
 	}
 		 
