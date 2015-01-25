@@ -1,63 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:social="http://spring.io/springsocial"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorator="layout">
-	<head>
-		<title>Spring Social Showcase</title>
-		<link rel="stylesheet" th:href="@{/resources/page.css}" type="text/css" media="screen"></link>
-		<link rel="stylesheet" th:href="@{/resources/form.css}" type="text/css" media="screen"></link>
-		<link rel="stylesheet" th:href="@{/resources/messages/messages.css}" type="text/css" media="screen"></link>
-	</head>
-	<body>
-		<div id="header">
-			<h1><a th:href="@{/}">Spring Social Showcase</a></h1>
-		</div>
-		
-		<div id="leftNav">
-			Left nav menu
-		</div>
-		
-		<div id="content" layout:fragment="content">
-			<form id="signin" th:action="@{/signin/authenticate}" method="post">
-				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
-				<div class="formInfo">
-			  		<div class="error" th:if="${param.error eq 'bad_credentials'}">
-			  			Your sign in information was incorrect.
-			  			Please try again or <a th:href="@{/signup}">sign up</a>.
-			  		</div>
-			  		<div class="error" th:if="${param.error eq 'multiple_users'}">
-			  			Multiple local accounts are connected to the provider account.
-			  			Try again with a different provider or with your username and password.
-			  		</div>
-				</div>
-				<fieldset>
-					<label for="login">Username</label>
-					<input id="login" name="username" type="text" size="25"></input>
-					<label for="password">Password</label>
-					<input id="password" name="password" type="password" size="25"></input>
-				</fieldset>
-				<button type="submit">Sign In</button>
-				
-				<p>Some test user/password pairs you may use are:</p>
-				<ul>
-					<li>habuma/freebirds</li>
-					<li>kdonald/melbourne</li>
-					<li>rclarkson/atlanta</li>
+	  lang="en"
+	  xmlns="http://www.w3.org/1999/html">
+<head>
+	<title>Διαδικτυακός Κρυμμένος Θησαυρός</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+	<meta charset="utf-8"></meta>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+	<meta name="description" content="Patras Carnival 2015 - Internet based Hidden Treasure Game"></meta>
+	<meta name="author" content=""></meta>
+	<link rel="shortcut icon" th:href="@{/resources/img/favicon.ico}"></link>
+
+	<!-- Bootstrap core CSS -->
+	<link th:href="@{/resources/css/bootstrap.css}" rel="stylesheet"></link>
+
+	<!-- Bootstrap theme -->
+	<link th:href="@{/resources/css/bootstrap-theme.css}" rel="stylesheet"></link>
+	<link th:href="@{/resources/css/justified-nav.css}" rel="stylesheet"></link>
+	<link th:href="@{/resources/css/patrascarnival.css}" rel="stylesheet"></link>
+	<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"></link>
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body role="document">
+<div class="container">
+
+	<div class="masthead">
+		<h3 class="text-muted"><img th:src="@{/resources/img/logo.png}"/></h3>
+		<ul class="nav nav-justified pull-left">
+			<li class="active"><a href="http://game.carnivalpatras.gr" th:text="#{menu.item.1}">Διαδικτυακός Κρυμμένος Θησαυρός</a></li>
+			<li><a href="http://www.carnivalpatras.gr" th:text="#{menu.item.2}">Πατρινό Καρναβάλι 2015</a></li>
+			<li class="dropdown">
+				<a href="#" data-toggle="dropdown" class="dropdown-toggle"><span th:text="#{language}">Language:</span> <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a th:href="@{/signin/?language=gr}">Ελληνικά</a></li>
+					<li><a th:href="@{/signin/?language=en}">English</a></li>
 				</ul>
-				
-				<p>Or you can <a th:href="@{/signup}">signup</a> with a new account.</p>
+			</li>
+		</ul>
+	</div>
+
+</div>
+<div class="container-fluid">
+
+	<div class="row" id="q-0">
+		<div class="col-sm-4 question-block col-sm-offset-4">
+			<form method="post" accept-charset="utf-8" class="form" role="form" name="fb_signin" id="fb_signin" th:action="@{/signin/facebook}">
+				<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+				<input type="hidden" name="scope" value="publish_stream,offline_access,publish_actions"></input>
+
+
+				<div class="panel panel-question">
+					<div class="panel-heading">
+						<h3 class="panel-title" th:text="#{signin.text}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο Πατρινό Καρναβάλι?</h3>
+					</div>
+
+				</div>
+
+				<!--panel-primary> -->
+				<div id="controls" class="col-md-12">
+					<div id="answer-action-0">
+						<button type="submit" style="width:100%; margin-top:10px; margin-bottom:20px;" class="btn btn-success"
+								th:text="#{signin}">
+							Αποθήκευση
+						</button>
+					</div>
+					<!-- answer action-->
+				</div>
+
 			</form>
+		</div>
+	</div>
 
+	<!-- contols-->
+</div>
 
-			<!-- FACEBOOK SIGNIN -->
-			<form name="fb_signin" id="fb_signin" th:action="@{/signin/facebook}" method="POST">
-				<input type="hidden" name="_csrf" th:value="${_csrf.token}"></input>
-				<input type="hidden" name="scope" value="publish_stream,user_photos,user_friends,offline_access,publish_actions"></input>
-				<button type="submit"><img th:src="@{/resources/social/facebook/sign-in-with-facebook.png}"></img></button>
-			</form>
-		
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/resources/js/jquery.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script th:src="@{/resources/js/game.js}"></script>
 
-		</div>		
-	</body>
+</body>
 </html>

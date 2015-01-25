@@ -1,0 +1,107 @@
+.question-block {
+    margin-top: 40px;
+}
+
+.answer-block {
+    position: relative;
+    display: inline-block !important;
+}
+
+.img-back{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    /*z-index: 10;*/
+    font-size: 150px;
+    color: rgba(126, 182, 177,0.25);
+}
+.wrap-btn {
+    white-space: normal;
+    width: 100px;
+    text-align: left;
+
+}
+
+/* portokali e4373c*/
+.panel-question {
+  border-color: #e4373c;
+}
+.panel-question > .panel-heading {
+  color: #fff;
+  background-color: #e4373c;
+  border-color: #e4373c;
+}
+.panel-question > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #e4373c;
+}
+.panel-question > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #e4373c;
+}
+
+/* portokali e4373c*/
+.panel-question-w1 {
+  border-color: #e4373c;
+}
+.panel-question-w1 > .panel-heading {
+  color: #fff;
+  background-color: #e4373c;
+  border-color: #e4373c;
+}
+.panel-question-w2 > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #e4373c;
+}
+.panel-question-w3 > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #e4373c;
+}
+.panel-question-w4 > .panel-footer + .panel-collapse .panel-body {
+    border-bottom-color: #e4373c;
+}
+
+/* kitrino #fce426*/
+.panel-question-w2 {
+  border-color: #fce426;
+}
+.panel-question-w2 > .panel-heading {
+  color: #fff;
+  background-color: #fce426;
+  border-color: #fce426;
+}
+.panel-question-w2 > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #fce426;
+}
+.panel-question-w2 > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #fce426;
+}
+
+
+/* mple #746da8*/
+.panel-question-w3 {
+  border-color: #746da8;
+}
+.panel-question-w3 > .panel-heading {
+  color: #fff;
+  background-color: #746da8;
+  border-color: #746da8;
+}
+.panel-question-w3 > .panel-heading + .panel-collapse .panel-body {
+  border-top-color: #746da8;
+}
+.panel-question-w3 > .panel-footer + .panel-collapse .panel-body {
+  border-bottom-color: #746da8;
+}
+
+/* ??? */
+.panel-question-w4 {
+    border-color: #746da8;
+}
+.panel-question-w4 > .panel-heading {
+    color: #fff;
+    background-color: #746da8;
+    border-color: #746da8;
+}
+.panel-question-w4 > .panel-heading + .panel-collapse .panel-body {
+    border-top-color: #746da8;
+}
+.panel-question-w4 > .panel-footer + .panel-collapse .panel-body {
+    border-bottom-color: #746da8;
+}

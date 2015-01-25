@@ -23,20 +23,17 @@ import gr.patras.carnival.game.data.model.UserAnswers;
 import gr.patras.carnival.game.data.repositories.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Provider;
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -65,16 +62,55 @@ public class HomeController {
         // Retrieve week ID
         final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
         model.addAttribute("lastWeekId", lastWeekId);
+        final String language = getCurrentLanguage();
+        model.addAttribute("lan", language);
+
+        if (lastWeekId < 5) {
+            int weekChange = 0;
+
+            model.addAttribute("questions", new ArrayList<Question>());
+            model.addAttribute("answers", new HashMap<Integer, List<Answer>>());
+            model.addAttribute("userAnswers", new HashMap<Long, Long>());
+        }
 
         // Retrieve all questions + answers up to last week
         final List<Question> lstQuestions = new ArrayList<Question>();
         final Map<Integer, List<Answer>> mapAnswers = new HashMap<Integer, List<Answer>>();
         for (int week = 1; week <= lastWeekId; week++) {
             final List<Question> thisWeekQuestions = questionRepository.findByWeek(week);
+            boolean isFirst = true;
+            if (language.equals("en")) {
+                for (Question thisWeekQuestion : thisWeekQuestions) {
+                    thisWeekQuestion.setText(thisWeekQuestion.getTextEn());
+                    if (isFirst) {
+                        thisWeekQuestion.setPhaseChange(true);
+                        isFirst = false;
+                    }
+                }
+            } else {
+                for (Question thisWeekQuestion : thisWeekQuestions) {
+                    thisWeekQuestion.setText(thisWeekQuestion.getTextGr());
+                    if (isFirst) {
+                        thisWeekQuestion.setPhaseChange(true);
+                        isFirst = false;
+                    }
+                }
+            }
+
             lstQuestions.addAll(thisWeekQuestions);
             LOGGER.debug("Questions for Week " + week + " found: " + thisWeekQuestions.size());
 
             final List<Answer> thisWeekAnswers = answerRepository.findByWeek(week);
+            if (language.equals("en")) {
+                for (Answer thisWeekAnswer : thisWeekAnswers) {
+                    thisWeekAnswer.setText(thisWeekAnswer.getTextEn());
+                }
+            } else {
+                for (Answer thisWeekAnswer : thisWeekAnswers) {
+                    thisWeekAnswer.setText(thisWeekAnswer.getTextGr());
+                }
+            }
+
             mapAnswers.put(week, thisWeekAnswers);
             LOGGER.debug("Answers for Week " + week + " found: " + thisWeekAnswers.size());
         }
@@ -101,6 +137,21 @@ public class HomeController {
         return "home";
     }
 
+    @RequestMapping("/privacy")
+    public String privacy() {
+        return "terms";
+    }
+
+    @RequestMapping("/terms")
+    public String terms() {
+        return "terms";
+    }
+
+    @RequestMapping("/help")
+    public String help() {
+        return "help";
+    }
+
     /**
      * The controller used to sign users up using only the email address.
      *
@@ -109,12 +160,7 @@ public class HomeController {
      */
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String postCreate(final Principal currentUser, final Model model,
-                             final ModelMap modelMap) {
-
-        for (String key : modelMap.keySet()) {
-            System.out.println(key);
-        }
-
+                             final HttpServletRequest request) {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
 
         final Account user = accountRepository.findByUsername(currentUser.getName());
@@ -130,25 +176,34 @@ public class HomeController {
         }
 
         // Save answers
-        final List<Question> lstQuestions = (List<Question>) modelMap.get("questions");
+        final Map<Long, Long> mapUserAnswers = new HashMap<Long, Long>();
+        final List<Question> lstQuestions = (List<Question>) model.asMap().get("questions");
         for (final Question question : lstQuestions) {
             final String questionId = String.valueOf(question.getId());
-            System.out.println(questionId);
-            if (modelMap.containsKey(questionId)) {
-                // Retrieve Answer
-                final String value = (String) modelMap.get(questionId);
-                System.out.println(question.getId() + " > " + value);
 
+            // Retrieve Answer
+            final String value = request.getParameter(questionId);
+            if (value != null) {
                 // Store new answer
                 final UserAnswers thisAnswer = new UserAnswers();
                 thisAnswer.setUserId(user.getId());
                 thisAnswer.setQuestionId(question.getId());
                 thisAnswer.setAnswerId(Long.valueOf(value));
                 userAnswersRepository.save(thisAnswer);
+
+                mapUserAnswers.put(question.getId(), thisAnswer.getAnswerId());
             }
         }
+
+        model.addAttribute("userAnswers", mapUserAnswers);
 
         return "home";
     }
 
+    private String getCurrentLanguage() {
+        final Locale locale = LocaleContextHolder.getLocale();
+        final String language = locale.getLanguage();
+        LOGGER.info("Current Language is: " + language);
+        return language;
+    }
 }
