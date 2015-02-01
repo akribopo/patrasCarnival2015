@@ -26,7 +26,7 @@
 				 th:text="${message.text}">error message text</div>
 			
 			<form id="signup" th:action="@{/signup}" method="post" th:object="${signupForm}">
-				<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+				<!--<input type="hidden" name="_csrf" th:value="${_csrf.token}" />-->
 				<div class="formInfo">
 					<div class="error" th:if="${#fields.hasErrors('*')}">Unable to sign up. Please fix the errors below and resubmit.</div>
 				</div>

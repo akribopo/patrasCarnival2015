@@ -31,7 +31,7 @@
 			</dl>
 			
 			<form id="disconnect" th:action="@{/connect/facebook}" method="post">
-				<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+				<!--<input type="hidden" name="_csrf" th:value="${_csrf.token}" />-->
 				<button type="submit">Disconnect from Facebook</button>	
 				<input type="hidden" name="_method" value="delete" />
 			</form>
