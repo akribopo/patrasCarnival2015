@@ -28,9 +28,12 @@ import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 /**
  * Security Configuration.
@@ -69,7 +72,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .formLogin()
+                .headers()
+                .addHeaderWriter(new XFrameOptionsHeaderWriter(
+                        new WhiteListedAllowFromStrategy(Arrays
+                                .asList("www.facebook.com"
+                                        ,"apps.facebook.com"))));
+        http.formLogin()
                 .loginPage("/signin")
                 .loginProcessingUrl("/signin/authenticate")
                 .failureUrl("/signin?param.error=bad_credentials")
