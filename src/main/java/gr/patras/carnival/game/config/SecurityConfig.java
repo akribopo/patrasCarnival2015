@@ -77,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         new WhiteListedAllowFromStrategy(Arrays
                                 .asList("www.facebook.com"
                                         ,"apps.facebook.com"))));
+        http.csrf().disable();
         http.formLogin()
                 .loginPage("/signin")
                 .loginProcessingUrl("/signin/authenticate")
