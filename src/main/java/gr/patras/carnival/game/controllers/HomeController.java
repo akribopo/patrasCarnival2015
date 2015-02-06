@@ -59,6 +59,10 @@ public class HomeController {
     private Provider<ConnectionRepository> connectionRepositoryProvider;
 
     private void buildModel(final Account currentUser, final Model model) {
+        if (currentUser.getHasPosted() == null) {
+            currentUser.setHasPosted(false);
+        }
+
         // Retrieve week ID
         final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
         model.addAttribute("lastWeekId", lastWeekId);
@@ -134,6 +138,7 @@ public class HomeController {
         final Account user = accountRepository.findByUsername(currentUser.getName());
         model.addAttribute(user);
         buildModel(user, model);
+        model.addAttribute("askToPost", false);
         return "home";
     }
 
@@ -164,8 +169,22 @@ public class HomeController {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
 
         final Account user = accountRepository.findByUsername(currentUser.getName());
+
         model.addAttribute(user);
         buildModel(user, model);
+
+        //Show only to admins.
+        if (user.getId() == 1
+                || user.getId() == 11) {
+            //Users will be asked to post on FB only once.
+            if (user.getHasPosted()) {
+                model.addAttribute("askToPost", false);
+            } else {
+                model.addAttribute("askToPost", true);
+            }
+        }
+        user.setHasPosted(true);
+        accountRepository.save(user);
 
         // Delete any previous answers
         final List<UserAnswers> userAnswers = userAnswersRepository.findByUserId(user.getId());

@@ -41,6 +41,8 @@ public class Account {
     private String profileUrl;
 
 
+    private Boolean hasPosted;
+
     //Default Constructor
     public Account() {
         //Used by hibernate
@@ -116,5 +118,11 @@ public class Account {
         return profileUrl;
     }
 
+    public Boolean getHasPosted() {
+        return hasPosted;
+    }
 
+    public void setHasPosted(Boolean hasPosted) {
+        this.hasPosted = hasPosted;
+    }
 }
