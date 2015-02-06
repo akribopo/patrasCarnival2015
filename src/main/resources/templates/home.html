@@ -27,17 +27,19 @@
         ref.parentNode.insertBefore(js, ref);
     }(document));
 
-    function postFeed(){
-        function requestCallback(response) {
-            console.log(response);
-        }
+    function postFeed(post){
+        if (post){
+            function requestCallback(response) {
+                console.log("response");
+            }
 
-        FB.ui({method: 'feed',
-            picture: 'https://game.carnivalpatras.gr/resources/img/logo.png',
-            link: "https://game.carnivalpatras.gr/",
-            caption: "game.carnivalpatras.gr",
-            description: "Μόλις έλαβα μέρος στην 3η φάση στο 9ο Παιχνίδι Διαδικτυακού Κρυμμένου Θησαυρού"
-        }, requestCallback);
+            FB.ui({method: 'feed',
+                picture: 'https://game.carnivalpatras.gr/resources/img/logo.png',
+                link: "https://game.carnivalpatras.gr/",
+                caption: "game.carnivalpatras.gr",
+                description: "Μόλις έλαβα μέρος στην 3η φάση στο 9ο Παιχνίδι Διαδικτυακού Κρυμμένου Θησαυρού"
+            }, requestCallback);
+        }
     }
 </script>
 <head>
@@ -157,7 +159,7 @@
                 <div id="controls" class="col-md-12" th:if="${lastWeekId > 0}">
                     <div id="answer-action-0"  th:if="${lastWeekId != 5}">
                         <button type="submit" style="width:100%; margin-top:10px; margin-bottom:20px;"
-                                class="btn btn-success" th:text="#{save}">
+                                class="btn btn-success" th:text="#{save}" onclick="'javascript:postFeed(\'' + ${askToPost} + '\');'" >
                             Αποθήκευση
                         </button>
                     </div>
@@ -172,9 +174,7 @@
 </div>
 
 <div id="fb-root"></div>
-<script type="text/javascript" th:if="${askToPost}">
-    postFeed();
-</script>
+
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
