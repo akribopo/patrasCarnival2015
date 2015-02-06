@@ -159,7 +159,7 @@
                 <div id="controls" class="col-md-12" th:if="${lastWeekId > 0}">
                     <div id="answer-action-0"  th:if="${lastWeekId != 5}">
                         <button type="submit" style="width:100%; margin-top:10px; margin-bottom:20px;"
-                                class="btn btn-success" th:text="#{save}" onclick="'javascript:postFeed(\'' + ${askToPost} + '\');'" >
+                                class="btn btn-success" th:text="#{save}" th:onclick="'javascript:postFeed(' + ${askToPost} + ');'" >
                             Αποθήκευση
                         </button>
                     </div>
