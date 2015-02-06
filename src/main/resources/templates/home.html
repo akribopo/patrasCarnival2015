@@ -2,6 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org"
       lang="en"
       xmlns="http://www.w3.org/1999/html">
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId      : '832016976836922', // App ID
+            status     : true, // check login status
+            cookie     : true, // enable cookies to allow the server to access the session
+            oauth      : true, // enable OAuth 2.0
+            xfbml      : true  // parse XFBML
+        });
+    };
+
+
+    // Load the SDK asynchronously
+    (function (d) {
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement('script');
+        js.id = id;
+        js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+
+    function postFeed(){
+        function requestCallback(response) {
+            console.log(response);
+        }
+
+        FB.ui({method: 'feed',
+            picture: 'https://game.carnivalpatras.gr/resources/img/logo.png',
+            link: "https://game.carnivalpatras.gr/",
+            caption: "game.carnivalpatras.gr",
+            description: "Μόλις έλαβα μέρος στην 3η φάση στο 9ο Παιχνίδι Διαδικτυακού Κρυμμένου Θησαυρού"
+        }, requestCallback);
+    }
+</script>
 <head>
     <title>Διαδικτυακός Κρυμμένος Θησαυρός</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
@@ -134,41 +172,8 @@
 </div>
 
 <div id="fb-root"></div>
-<script type="text/javascript">
-
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '832016976836922', // App ID
-            status     : true, // check login status
-            cookie     : true, // enable cookies to allow the server to access the session
-            oauth      : true, // enable OAuth 2.0
-            xfbml      : true  // parse XFBML
-        });
-
-        function postFeed(){
-
-            FB.ui({method: 'feed',
-                picture: 'https://game.carnivalpatras.gr/resources/img/logo.png',
-                link: "https://game.carnivalpatras.gr/",
-                caption: "game.carnivalpatras.gr",
-                description: "Μόλις έλαβα μέρος στην 3η φάση στο 9ο Παιχνίδι Διαδικτυακού Κρυμμένου Θησαυρού"
-            }, requestCallback);
-        }
-
-
-        // Load the SDK Asynchronously
-        (function() {
-            var e = document.createElement('script'); e.async = true;
-            e.src = document.location.protocol
-            + '//connect.facebook.net/en_US/all.js';
-            document.getElementById('fb-root').appendChild(e);
-        }());
-</script>
-
 <script type="text/javascript" th:if="${askToPost}">
-    $(document).ready(function() {
-        postFeed();
-    });
+    postFeed();
 </script>
 
 <!-- Bootstrap core JavaScript
