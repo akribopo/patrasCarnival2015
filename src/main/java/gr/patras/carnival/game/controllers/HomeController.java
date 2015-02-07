@@ -185,6 +185,7 @@ public class HomeController {
 
         user.setHasPosted(true);
         accountRepository.save(user);
+        model.addAttribute("askToPost", false);
 
         // Delete any previous answers
         final List<UserAnswers> userAnswers = userAnswersRepository.findByUserId(user.getId());
