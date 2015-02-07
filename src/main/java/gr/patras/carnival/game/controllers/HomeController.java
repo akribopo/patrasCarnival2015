@@ -63,15 +63,11 @@ public class HomeController {
             currentUser.setHasPosted(false);
         }
 
-        //Show only to admins.
-        if (currentUser.getId() == 1
-                || currentUser.getId() == 11) {
-            //Users will be asked to post on FB only once.
-            if (currentUser.getHasPosted()) {
-                model.addAttribute("askToPost", false);
-            } else {
-                model.addAttribute("askToPost", true);
-            }
+        //Users will be asked to post on FB only once.
+        if (currentUser.getHasPosted()) {
+            model.addAttribute("askToPost", false);
+        } else {
+            model.addAttribute("askToPost", true);
         }
 
         // Retrieve week ID
