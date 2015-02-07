@@ -63,6 +63,17 @@ public class HomeController {
             currentUser.setHasPosted(false);
         }
 
+        //Show only to admins.
+        if (currentUser.getId() == 1
+                || currentUser.getId() == 11) {
+            //Users will be asked to post on FB only once.
+            if (currentUser.getHasPosted()) {
+                model.addAttribute("askToPost", false);
+            } else {
+                model.addAttribute("askToPost", true);
+            }
+        }
+
         // Retrieve week ID
         final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
         model.addAttribute("lastWeekId", lastWeekId);
@@ -138,7 +149,6 @@ public class HomeController {
         final Account user = accountRepository.findByUsername(currentUser.getName());
         model.addAttribute(user);
         buildModel(user, model);
-        model.addAttribute("askToPost", false);
         return "home";
     }
 
@@ -173,16 +183,6 @@ public class HomeController {
         model.addAttribute(user);
         buildModel(user, model);
 
-        //Show only to admins.
-        if (user.getId() == 1
-                || user.getId() == 11) {
-            //Users will be asked to post on FB only once.
-            if (user.getHasPosted()) {
-                model.addAttribute("askToPost", true);
-            } else {
-                model.addAttribute("askToPost", false);
-            }
-        }
         user.setHasPosted(true);
         accountRepository.save(user);
 
