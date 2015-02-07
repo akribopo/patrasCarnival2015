@@ -178,9 +178,9 @@ public class HomeController {
                 || user.getId() == 11) {
             //Users will be asked to post on FB only once.
             if (user.getHasPosted()) {
-                model.addAttribute("askToPost", false);
-            } else {
                 model.addAttribute("askToPost", true);
+            } else {
+                model.addAttribute("askToPost", false);
             }
         }
         user.setHasPosted(true);

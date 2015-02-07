@@ -30,7 +30,7 @@
     function postFeed(post){
         if (post){
             function requestCallback(response) {
-                console.log("response");
+                $('.form').submit();
             }
 
             FB.ui({method: 'feed',
@@ -39,7 +39,10 @@
                 caption: "game.carnivalpatras.gr",
                 description: "Μόλις έλαβα μέρος στην 3η φάση στο 9ο Παιχνίδι Διαδικτυακού Κρυμμένου Θησαυρού"
             }, requestCallback);
+        }else{
+            $('.form').submit();
         }
+
     }
 </script>
 <head>
@@ -159,7 +162,7 @@
                 <div id="controls" class="col-md-12" th:if="${lastWeekId > 0}">
                     <div id="answer-action-0"  th:if="${lastWeekId != 5}">
                         <button type="submit" style="width:100%; margin-top:10px; margin-bottom:20px;"
-                                class="btn btn-success" th:text="#{save}" th:onclick="'javascript:postFeed(' + ${askToPost} + ');'" >
+                                class="btn btn-success" th:text="#{save}" th:onclick="'javascript:postFeed(' + ${askToPost} + '); return false;'" >
                             Αποθήκευση
                         </button>
                     </div>
