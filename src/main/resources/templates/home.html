@@ -35,9 +35,12 @@
 
             FB.ui({method: 'feed',
                 picture: 'https://game.carnivalpatras.gr/resources/img/logo.png',
-                link: "https://game.carnivalpatras.gr/",
+                link: "https://www.facebook.com/carnivalpatras.gr",
                 caption: "game.carnivalpatras.gr",
-                description: "Μόλις έλαβα μέρος στην 3η φάση στο 9ο Παιχνίδι Διαδικτυακού Κρυμμένου Θησαυρού"
+                description: "Μόλις έλαβα μέρος στην 3η φάση στο 9ο Παιχνίδι Διαδικτυακού Κρυμμένου Θησαυρού",
+                actions: [
+                    { name: 'Play now', link: 'https://game.carnivalpatras.gr/' }
+                ]
             }, requestCallback);
         }else{
             $('.form').submit();
