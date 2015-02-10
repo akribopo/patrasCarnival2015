@@ -125,12 +125,6 @@
                     </div>
                 </div>
 
-                <div class="panel panel-question">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" th:text="#{rules}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο Πατρινό Καρναβάλι?</h3>
-                    </div>
-                </div>
-
                 <div th:each="question : ${questions}">
                     <div th:class="${'panel panel-question-w' + question.week}" th:if="${question.phaseChange}">
                         <div class="panel-heading">
@@ -178,6 +172,11 @@
                     <!-- answer action-->
                 </div>
 
+                <div class="panel panel-rules">
+                    <div class="panel-heading">
+                        <h3 class="panel-title" th:text="#{rules}">Ποιός ντύθηκε μπούλα για πρώτη φορά στο Πατρινό Καρναβάλι?</h3>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
