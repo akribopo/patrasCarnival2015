@@ -2122,8 +2122,8 @@ fieldset[disabled] .btn-primary.active {
 }
 .btn-success {
   color: #fff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+  background-color: #e4373c;
+  border-color: #db1a1e;
 }
 .btn-success:hover,
 .btn-success:focus,
@@ -2204,8 +2204,8 @@ fieldset[disabled] .btn-info.active {
 }
 .btn-warning {
   color: #fff;
-  background-color: #f0ad4e;
-  border-color: #eea236;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
 }
 .btn-warning:hover,
 .btn-warning:focus,
