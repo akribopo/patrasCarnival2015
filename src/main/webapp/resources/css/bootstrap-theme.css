@@ -72,12 +72,12 @@
   border-color: #2b669a;
 }
 .btn-success {
-  background-image: -webkit-linear-gradient(top, #5cb85c 0%, #419641 100%);
-  background-image:         linear-gradient(to bottom, #5cb85c 0%, #419641 100%);
+  background-image: -webkit-linear-gradient(top, #e4373c 0%, #db1a1e 100%);
+  background-image:         linear-gradient(to bottom, #e4373c 0%, #db1a1e 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5cb85c', endColorstr='#ff419641', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   background-repeat: repeat-x;
-  border-color: #3e8f3e;
+  border-color: #db1a1e;
 }
 .btn-success:hover,
 .btn-success:focus {
