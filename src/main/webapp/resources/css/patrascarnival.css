@@ -92,16 +92,33 @@
 
 /* ??? */
 .panel-question-w4 {
-    border-color: #746da8;
+    border-color: #31a34d;
 }
 .panel-question-w4 > .panel-heading {
     color: #fff;
-    background-color: #746da8;
-    border-color: #746da8;
+    background-color: #31a34d;
+    border-color: #31a34d;
 }
 .panel-question-w4 > .panel-heading + .panel-collapse .panel-body {
-    border-top-color: #746da8;
+    border-top-color: #31a34d;
 }
 .panel-question-w4 > .panel-footer + .panel-collapse .panel-body {
-    border-bottom-color: #746da8;
+    border-bottom-color: #31a34d;
+}
+
+
+/* portokali e4373c*/
+.panel-rules {
+    border-color: #7f77ae;
+}
+.panel-rules > .panel-heading {
+    color: #fff;
+    background-color: #7f77ae;
+    border-color: #7f77ae;
+}
+.panel-rules > .panel-heading + .panel-collapse .panel-body {
+    border-top-color: #7f77ae;
+}
+.panel-rules > .panel-footer + .panel-collapse .panel-body {
+    border-bottom-color: #7f77ae;
 }
