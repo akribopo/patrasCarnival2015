@@ -190,7 +190,7 @@ public class HomeController {
     }
 
     @RequestMapping("/final/round")
-    public String home(final Model model) {
+    public String last(final Principal currentUser, final Model model) {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
         final Account user = accountRepository.findByUsername(currentUser.getName());
         model.addAttribute(user);
