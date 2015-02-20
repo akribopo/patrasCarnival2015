@@ -196,12 +196,15 @@ public class HomeController {
         //final Account user = accountRepository.findByUsername("741326095982689");
         model.addAttribute(user);
 
-        // Retrieve week ID
-        //final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
+        final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
+        if (lastWeekId > 4) {
+            buildLastModel(user, model);
+            return "final";
 
-        buildLastModel(user, model);
-
-        return "final";
+        } else {
+            buildModel(user, model);
+            return "home";
+        }
     }
 
     /**
@@ -409,6 +412,10 @@ public class HomeController {
         if (lastWeekId == 26) {
             // the treasure is found!
             model.addAttribute("found", 1);
+
+        } else if (lastWeekId <= 4) {
+            buildModel(user, model);
+            return "home";
         }
 
         return "final";
@@ -434,9 +441,18 @@ public class HomeController {
     public String home(final Principal currentUser, final Model model) {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
         final Account user = accountRepository.findByUsername(currentUser.getName());
+        //final Account user = accountRepository.findByUsername("741326095982689");
         model.addAttribute(user);
-        buildModel(user, model);
-        return "home";
+
+        final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
+        if (lastWeekId > 4) {
+            buildLastModel(user, model);
+            return "final";
+
+        } else {
+            buildModel(user, model);
+            return "home";
+        }
     }
 
     /**
@@ -449,8 +465,8 @@ public class HomeController {
     public String postCreate(final Principal currentUser, final Model model,
                              final HttpServletRequest request) {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
-
         final Account user = accountRepository.findByUsername(currentUser.getName());
+        //final Account user = accountRepository.findByUsername("741326095982689");
 
         model.addAttribute(user);
         buildModel(user, model);
@@ -488,6 +504,12 @@ public class HomeController {
         }
 
         model.addAttribute("userAnswers", mapUserAnswers);
+
+        final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
+        if (lastWeekId > 4) {
+            buildLastModel(user, model);
+            return "final";
+        }
 
         return "home";
     }
