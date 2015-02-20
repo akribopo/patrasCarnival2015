@@ -193,6 +193,7 @@ public class HomeController {
     public String last(final Principal currentUser, final Model model) {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
         final Account user = accountRepository.findByUsername(currentUser.getName());
+        //final Account user = accountRepository.findByUsername("741326095982689");
         model.addAttribute(user);
 
         // Retrieve week ID
@@ -214,6 +215,7 @@ public class HomeController {
                                  final HttpServletRequest request) {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
         final Account user = accountRepository.findByUsername(currentUser.getName());
+        //final Account user = accountRepository.findByUsername("741326095982689");
         model.addAttribute(user);
         buildLastModel(user, model);
 
@@ -401,6 +403,13 @@ public class HomeController {
 
         model.addAttribute("wronganswer", wronganswer);
         model.addAttribute("found", found);
+
+        // Retrieve week ID
+        final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
+        if (lastWeekId == 26) {
+            // the treasure is found!
+            model.addAttribute("found", 1);
+        }
 
         return "final";
     }
