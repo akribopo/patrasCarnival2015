@@ -16,10 +16,7 @@
 package gr.patras.carnival.game.controllers;
 
 
-import gr.patras.carnival.game.data.model.Account;
-import gr.patras.carnival.game.data.model.Answer;
-import gr.patras.carnival.game.data.model.Question;
-import gr.patras.carnival.game.data.model.UserAnswers;
+import gr.patras.carnival.game.data.model.*;
 import gr.patras.carnival.game.data.repositories.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,17 +68,19 @@ public class HomeController {
         }
 
         // Retrieve week ID
-        final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
+        //final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
+        final long lastWeekId = 4;
         model.addAttribute("lastWeekId", lastWeekId);
+
+        // Retrieve language
         final String language = getCurrentLanguage();
         model.addAttribute("lan", language);
 
-        if (lastWeekId < 5) {
-            int weekChange = 0;
-
+        if (lastWeekId >= 5) {
             model.addAttribute("questions", new ArrayList<Question>());
             model.addAttribute("answers", new HashMap<Integer, List<Answer>>());
             model.addAttribute("userAnswers", new HashMap<Long, Long>());
+            return;
         }
 
         // Retrieve all questions + answers up to last week
@@ -138,15 +137,274 @@ public class HomeController {
         model.addAttribute("userAnswers", mapUserAnswers);
     }
 
+    private void buildLastModel(final Account currentUser, final Model model) {
+        if (currentUser.getHasPosted() == null) {
+            currentUser.setHasPosted(false);
+        }
 
-    @RequestMapping("/")
-    public String home(final Principal currentUser, final Model model) {
+        //Users will be asked to post on FB only once.
+        if (currentUser.getHasPosted()) {
+            model.addAttribute("askToPost", false);
+        } else {
+            model.addAttribute("askToPost", true);
+        }
+
+        // Retrieve language
+        final String language = getCurrentLanguage();
+        model.addAttribute("lan", language);
+
+        // Retrieve week ID
+        final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
+        if (lastWeekId == 26) {
+            // the treasure is found!
+            model.addAttribute("found", 1);
+            model.addAttribute("wronganswer", 0);
+            return;
+
+        } else {
+            model.addAttribute("found", 0);
+        }
+
+        // Identify in which step is the user
+        int lastStepId = 20;
+        final List<UserAnswers> thisUserAnswers = userAnswersRepository.findByUserId(currentUser.getId());
+        for (UserAnswers userAnswer : thisUserAnswers) {
+            if (userAnswer.getQuestionId() > lastStepId) {
+                lastStepId = (int) userAnswer.getQuestionId();
+            }
+        }
+
+        // Retrieve the question
+        final List<Question> thisStepQuestions = questionRepository.findByWeek(lastStepId);
+
+        final Question thisQuestion = thisStepQuestions.get(0);
+        if (language.equals("en")) {
+            thisQuestion.setText(thisQuestion.getTextEn());
+        } else {
+            thisQuestion.setText(thisQuestion.getTextGr());
+        }
+
+        model.addAttribute("question", thisQuestion);
+        model.addAttribute("round", thisQuestion.getId());
+        model.addAttribute("wronganswer", 0);
+    }
+
+    @RequestMapping("/final/round")
+    public String home(final Model model) {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
         final Account user = accountRepository.findByUsername(currentUser.getName());
         model.addAttribute(user);
-        buildModel(user, model);
-        return "home";
+
+        // Retrieve week ID
+        //final long lastWeekId = weekRepository.findOne(new Long(1)).getWeek();
+
+        buildLastModel(user, model);
+
+        return "final";
     }
+
+    /**
+     * The controller used to sign users up using only the email address.
+     *
+     * @param model the map containing the model.
+     * @return the corresponding view.
+     */
+    @RequestMapping(value = "/final/round", method = RequestMethod.POST)
+    public String postCreateLast(final Principal currentUser, final Model model,
+                                 final HttpServletRequest request) {
+        model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
+        final Account user = accountRepository.findByUsername(currentUser.getName());
+        model.addAttribute(user);
+        buildLastModel(user, model);
+
+        user.setHasPosted(true);
+        accountRepository.save(user);
+        model.addAttribute("askToPost", false);
+
+        // Retrieve language
+        final String language = getCurrentLanguage();
+        model.addAttribute("lan", language);
+
+        // Identify in which step is the user
+        int lastStepId = 20;
+        final List<UserAnswers> thisUserAnswers = userAnswersRepository.findByUserId(user.getId());
+        for (UserAnswers userAnswer : thisUserAnswers) {
+            if (userAnswer.getQuestionId() > lastStepId) {
+                lastStepId = (int) userAnswer.getQuestionId();
+            }
+        }
+
+        // Retrieve the question
+        final List<Question> thisStepQuestion = questionRepository.findByWeek(lastStepId);
+        Question thisQuestion = thisStepQuestion.get(0);
+        if (language.equals("en")) {
+            thisQuestion.setText(thisQuestion.getTextEn());
+        } else {
+            thisQuestion.setText(thisQuestion.getTextGr());
+        }
+        model.addAttribute("question", thisQuestion);
+        model.addAttribute("round", thisQuestion.getId());
+
+        // Retrieve Answer
+        final String value = request.getParameter("answer");
+
+        // identify if answer is correct
+        int wronganswer = 1;
+        int found = 0;
+        switch (lastStepId) {
+
+            case 20: // 1st round
+                if (value.equals("29")) {
+                    // Correct answer
+                    wronganswer = 0;
+
+                    // Store new answer
+                    final UserAnswers thisAnswer = new UserAnswers();
+                    thisAnswer.setUserId(user.getId());
+                    thisAnswer.setQuestionId(thisQuestion.getId());
+                    thisAnswer.setAnswerId(1);
+                    userAnswersRepository.save(thisAnswer);
+
+                    // progress step counter
+                    lastStepId = 21;
+                }
+                break;
+
+            case 21: // 2nd round
+                if (value.equals("49")) {
+                    // Correct answer
+                    wronganswer = 0;
+
+                    // Store new answer
+                    final UserAnswers thisAnswer = new UserAnswers();
+                    thisAnswer.setUserId(user.getId());
+                    thisAnswer.setQuestionId(thisQuestion.getId());
+                    thisAnswer.setAnswerId(1);
+                    userAnswersRepository.save(thisAnswer);
+
+                    // progress step counter
+                    lastStepId = 22;
+                }
+                break;
+
+            case 22: // 3rd round
+                if (value.equals("9")) {
+                    // we need one more digit
+                    final String value2 = request.getParameter("answer2");
+
+                    if (value2.equals("7")) {
+                        // Correct answer
+                        wronganswer = 0;
+
+                        // Store new answer
+                        final UserAnswers thisAnswer = new UserAnswers();
+                        thisAnswer.setUserId(user.getId());
+                        thisAnswer.setQuestionId(thisQuestion.getId());
+                        thisAnswer.setAnswerId(1);
+                        userAnswersRepository.save(thisAnswer);
+
+                        // progress step counter
+                        lastStepId = 23;
+                    }
+                }
+                break;
+
+            case 23: // 4th round
+                if (value.equals("8")) {
+                    // we need one more digit
+                    final String value2 = request.getParameter("answer2");
+
+                    if (value2.equals("4")) {
+                        // Correct answer
+                        wronganswer = 0;
+
+                        // Store new answer
+                        final UserAnswers thisAnswer = new UserAnswers();
+                        thisAnswer.setUserId(user.getId());
+                        thisAnswer.setQuestionId(thisQuestion.getId());
+                        thisAnswer.setAnswerId(1);
+                        userAnswersRepository.save(thisAnswer);
+
+                        // progress step counter
+                        lastStepId = 24;
+                    }
+                }
+                break;
+
+            case 24: // 5th round
+                if (value.equals("1")) {
+                    // we need one more digit
+                    final String value2 = request.getParameter("answer2");
+
+                    if (value2.equals("1")) {
+
+                        // we need one more digit
+                        final String value3 = request.getParameter("answer3");
+
+                        if (value3.equals("4")) {
+                            // Correct answer
+                            wronganswer = 0;
+
+                            // Store new answer
+                            final UserAnswers thisAnswer = new UserAnswers();
+                            thisAnswer.setUserId(user.getId());
+                            thisAnswer.setQuestionId(thisQuestion.getId());
+                            thisAnswer.setAnswerId(1);
+                            userAnswersRepository.save(thisAnswer);
+
+                            // progress step counter
+                            lastStepId = 25;
+                        }
+                    }
+                }
+                break;
+
+            case 25: // 6th round
+                if (value.toLowerCase().equals("speech")) {
+                    // We have a winner !
+
+                    // Store new answer
+                    final UserAnswers thisAnswer = new UserAnswers();
+                    thisAnswer.setUserId(user.getId());
+                    thisAnswer.setQuestionId(thisQuestion.getId());
+                    thisAnswer.setAnswerId(1);
+                    userAnswersRepository.save(thisAnswer);
+
+                    // progress step counter
+                    lastStepId = 26;
+                    found = 1;
+                    wronganswer = 0;
+
+                    // conclude the game - treasure found!
+                    final List<Week> lstWeek = weekRepository.findById(new Long(1));
+                    final Week week = lstWeek.get(0);
+                    week.setWeek(26);
+                    weekRepository.save(week);
+
+                    model.addAttribute("found", 1);
+                }
+                break;
+        }
+
+        if (wronganswer == 0 && lastStepId < 26) {
+            // retrieve next question
+            final List<Question> nextStepQuestion = questionRepository.findByWeek(lastStepId);
+            Question nextQuestion = nextStepQuestion.get(0);
+            if (language.equals("en")) {
+                nextQuestion.setText(nextQuestion.getTextEn());
+            } else {
+                nextQuestion.setText(nextQuestion.getTextGr());
+            }
+            model.addAttribute("question", nextQuestion);
+            model.addAttribute("round", nextQuestion.getId());
+        }
+
+        model.addAttribute("wronganswer", wronganswer);
+        model.addAttribute("found", found);
+
+        return "final";
+    }
+
 
     @RequestMapping("/privacy")
     public String privacy() {
@@ -161,6 +419,15 @@ public class HomeController {
     @RequestMapping("/help")
     public String help() {
         return "help";
+    }
+
+    @RequestMapping("/")
+    public String home(final Principal currentUser, final Model model) {
+        model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
+        final Account user = accountRepository.findByUsername(currentUser.getName());
+        model.addAttribute(user);
+        buildModel(user, model);
+        return "home";
     }
 
     /**

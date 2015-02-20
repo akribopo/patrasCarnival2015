@@ -94,6 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/auth/**",
                         "/signin/**",
                         "/signup/**",
+                        "/final/**",
                         "/disconnect/facebook").permitAll()
                 .antMatchers("/**").authenticated()
                 .and()
