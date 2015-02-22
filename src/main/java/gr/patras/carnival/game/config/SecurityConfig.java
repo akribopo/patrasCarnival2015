@@ -42,10 +42,8 @@ import java.util.Arrays;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private ApplicationContext context;
+public class SecurityConfig
+        extends WebSecurityConfigurerAdapter {
 
     @Inject
     private DataSource dataSource;
@@ -94,6 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/auth/**",
                         "/signin/**",
                         "/signup/**",
+                        "/results",
                         "/disconnect/facebook").permitAll()
                 .antMatchers("/**").authenticated()
                 .and()

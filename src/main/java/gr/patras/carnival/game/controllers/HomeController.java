@@ -55,6 +55,8 @@ public class HomeController {
     @Autowired
     private Provider<ConnectionRepository> connectionRepositoryProvider;
 
+    private Map<String, Object> resultsEn, resultsGr;
+
     private void buildModel(final Account currentUser, final Model model) {
         if (currentUser.getHasPosted() == null) {
             currentUser.setHasPosted(false);
@@ -189,6 +191,141 @@ public class HomeController {
         model.addAttribute("wronganswer", 0);
     }
 
+    @RequestMapping("/results")
+    public String results(final Model model) {
+        final String language = getCurrentLanguage();
+        if (language.equals("en")) {
+            if (resultsEn == null) {
+                resultsEn = buildResults("en");
+            }
+            model.mergeAttributes(resultsEn);
+
+        } else {
+            if (resultsGr == null) {
+                resultsGr = buildResults("gr");
+            }
+
+            model.mergeAttributes(resultsGr);
+        }
+
+        return "results";
+    }
+
+    private Map<String, Object> buildResults(final String language) {
+        final Map<String, Object> model = new HashMap<String, Object>();
+
+        final int[] correctAnswers = {0, 4, 26, 14, 24, 25, 30, 31, 39, 38, 46, 61, 67, 64, 69, 73, 90, 86, 85, 102, 101, 1, 1, 1, 1, 1, 1};
+
+        // default answers map
+        final Map<Long, String> mapAnswers = new HashMap<Long, String>();
+        final Map<Long, Boolean> mapCorrectAnswers = new HashMap<Long, Boolean>();
+        for (long questionId = 1; questionId <= 26; questionId++) {
+            mapAnswers.put(questionId, "-");
+            mapCorrectAnswers.put(questionId, false);
+        }
+
+        // answers map
+        final Iterable<Answer> iterAnswers = answerRepository.findAll();
+        final Map<Long, String> mapAnswersTxt = new HashMap<Long, String>();
+        for (final Answer answer : iterAnswers) {
+            if (language.equals("en")) {
+                mapAnswersTxt.put(answer.getId(), answer.getTextEn());
+
+            } else {
+                mapAnswersTxt.put(answer.getId(), answer.getTextGr());
+            }
+        }
+
+        // adding answers for final phase
+        mapAnswersTxt.put(new Long(1), "X");
+
+        // User's map
+        final Map<Long, Map<Long, String>> userAnswers = new HashMap<Long, Map<Long, String>>();
+        final Map<Long, Map<Long, Boolean>> userCorrectAnswers = new HashMap<Long, Map<Long, Boolean>>();
+        final Map<Long, Integer> userTotAnswers = new HashMap<Long, Integer>();
+        final Map<Long, Integer> userPoints = new HashMap<Long, Integer>();
+
+        final Iterable<Account> iterAcounts = accountRepository.findAll();
+        for (final Account account : iterAcounts) {
+            int totAnswers = 0;
+            int totPoints = 0;
+
+            final Map<Long, Boolean> userMapCorrect = new HashMap<Long, Boolean>(mapCorrectAnswers);
+            final Map<Long, String> userMap = new HashMap<Long, String>(mapAnswers);
+
+            final List<UserAnswers> lstUserAnswers = userAnswersRepository.findByUserId(Long.valueOf(account.getId()));
+            for (UserAnswers userAnswer : lstUserAnswers) {
+                if ((userAnswer.getAnswerId() != 1 || userAnswer.getQuestionId() > 20)
+                        && userAnswer.getAnswerId() != 27
+                        && userAnswer.getAnswerId() != 53
+                        && userAnswer.getAnswerId() != 79) {
+                    userMap.put(userAnswer.getQuestionId(), mapAnswersTxt.get(userAnswer.getAnswerId()));
+
+                    // count total answers
+                    totAnswers++;
+
+                    // count correct answers
+                    if (correctAnswers[(int) userAnswer.getQuestionId()] == userAnswer.getAnswerId()
+                            || (userAnswer.getQuestionId() == new Long(10) && userAnswer.getAnswerId() == new Long(48))) {
+
+                        userMapCorrect.put(userAnswer.getQuestionId(), true);
+
+                        if (userAnswer.getQuestionId() <= 20
+                                || userAnswer.getQuestionId() == 26) {
+                            totPoints += 50;
+
+                        } else if (userAnswer.getQuestionId() > 20 && userAnswer.getQuestionId() < 26) {
+                            totPoints += 10;
+                        }
+                    }
+
+                }
+            }
+
+            userAnswers.put(account.getId(), userMap);
+            userCorrectAnswers.put(account.getId(), userMapCorrect);
+            userTotAnswers.put(account.getId(), totAnswers);
+            userPoints.put(account.getId(), totPoints);
+        }
+
+        // Sort players based on points
+        final List<Account> lstAccounts = new ArrayList<Account>();
+        for (final Account account : iterAcounts) {
+            lstAccounts.add(account);
+        }
+
+        Collections.sort(lstAccounts, new Comparator<Account>() {
+            public int compare (Account o1, Account o2) {
+                final int totPoints1 = userPoints.get(o1.getId());
+                final int totPoints2 = userPoints.get(o2.getId());
+                final int totAnswers1 = userTotAnswers.get(o1.getId());
+                final int totAnswers2 = userTotAnswers.get(o2.getId());
+
+                if (totPoints2 > totPoints1) {
+                    return 1;
+                } else if (totPoints2 < totPoints1) {
+                    return -1;
+                } else if (totAnswers2 > totAnswers1) {
+                    return 1;
+                } else if (totAnswers2 < totAnswers1) {
+                    return -1;
+                }
+
+                return 0;
+            }
+        });
+
+        model.put("accounts", lstAccounts);
+
+        model.put("mapAnswers", mapAnswers);
+        model.put("userCorrectAnswers", userCorrectAnswers);
+        model.put("userAnswers", userAnswers);
+        model.put("userTotAnswers", userTotAnswers);
+        model.put("userPoints", userPoints);
+
+        return model;
+    }
+
     @RequestMapping("/final/round")
     public String last(final Principal currentUser, final Model model) {
         model.addAttribute("connectionsToProviders", connectionRepositoryProvider.get().findAllConnections());
@@ -241,7 +378,7 @@ public class HomeController {
 
         // Retrieve the question
         final List<Question> thisStepQuestion = questionRepository.findByWeek(lastStepId);
-        Question thisQuestion = thisStepQuestion.get(0);
+        final Question thisQuestion = thisStepQuestion.get(0);
         if (language.equals("en")) {
             thisQuestion.setText(thisQuestion.getTextEn());
         } else {
@@ -394,7 +531,7 @@ public class HomeController {
         if (wronganswer == 0 && lastStepId < 26) {
             // retrieve next question
             final List<Question> nextStepQuestion = questionRepository.findByWeek(lastStepId);
-            Question nextQuestion = nextStepQuestion.get(0);
+            final Question nextQuestion = nextStepQuestion.get(0);
             if (language.equals("en")) {
                 nextQuestion.setText(nextQuestion.getTextEn());
             } else {
